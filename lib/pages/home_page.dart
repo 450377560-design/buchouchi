@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import '../models/cuisine.dart';
-import '../pages/recipe_list_page.dart';
+import 'recipe_list_page.dart';
 import 'recipe_edit_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
-
   @override
   State<HomePage> createState() => _HomePageState();
 }
@@ -13,15 +12,10 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    final items = [
-      ...CuisineX.eight,
-      Cuisine.custom,
-    ];
+    final items = [...CuisineX.eight, Cuisine.custom];
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('不愁吃'),
-      ),
+      appBar: AppBar(title: const Text('不愁吃')),
       body: GridView.builder(
         padding: const EdgeInsets.all(12),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
