@@ -4,7 +4,7 @@ on:
   workflow_dispatch: {}
 
 permissions:
-  contents: write   # 允许推回仓库
+  contents: write
 
 jobs:
   fetch:
@@ -12,6 +12,24 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      # 确保目录与必要文件存在（不会覆盖你已有内容）
+      - name: Prepare folders & placeholders
+        run: |
+          set -e
+          mkdir -p assets/images assets/recipes scripts
+          # 若没有映射文件则建一个空的，避免后续 git add 报错
+          [ -f assets/recipes/images.json ] || echo "{}" > assets/recipes/images.json
+          # 若没有菜名清单，提供一个最小示例，便于你直接跑通
+          if [ ! -f assets/recipes/seed_names.txt ]; then
+            cat > assets/recipes/seed_names.txt <<'EOF'
+宫保鸡丁
+麻婆豆腐
+鱼香肉丝
+白切鸡
+东坡肉
+EOF
+          fi
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -27,15 +45,21 @@ jobs:
           python scripts/fetch_wiki_images.py
           echo "Result tree:"
           ls -lah assets/images || true
-          sed -n '1,120p' assets/recipes/images.json || true
+          echo "--- images.json ---"
+          sed -n '1,200p' assets/recipes/images.json || true
 
+      # 仅在文件存在时 add，避免 pathspec 报错
       - name: Commit & push if changed
         run: |
           set -e
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          # 只 add 存在的路径
+          [ -d assets/images ] && git add -A assets/images || true
+          [ -f assets/recipes/images.json ] && git add assets/recipes/images.json || true
+
           if [ -n "$(git status --porcelain)" ]; then
-            git add assets/images assets/recipes/images.json
             git commit -m "ci: fetch recipe images & update mapping"
             git push
           else
