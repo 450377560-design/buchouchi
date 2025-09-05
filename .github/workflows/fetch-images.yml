@@ -52,6 +52,11 @@ jobs:
 
       - name: Run fetch script
         shell: bash
+        env:
+          BING_IMAGE_API_KEY: ${{ secrets.BING_IMAGE_API_KEY }}  # ← 在仓库 Settings → Secrets 新建
+          BING_MARKET: zh-CN
+          BING_SAFE: Moderate
+          BING_LICENSE: Any
         run: |
           chmod +x scripts/fetch_wiki_images.py
           python scripts/fetch_wiki_images.py
