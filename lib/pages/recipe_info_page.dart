@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import '../models/recipe.dart';
 import '../models/cuisine.dart';
 import '../db/database_helper.dart';
-import '../services/asset_image_resolver.dart';
 import 'recipe_detail_page.dart';
 
 class RecipeInfoPage extends StatefulWidget {
@@ -14,26 +13,19 @@ class RecipeInfoPage extends StatefulWidget {
 }
 
 class _RecipeInfoPageState extends State<RecipeInfoPage> {
-  String? _assetPath; // 本地图片
-  String? _netUrl;    // 远程图片（仅作兜底）
+  String? _img;
   final db = DatabaseHelper.instance;
 
   @override
   void initState() {
     super.initState();
-    _loadImage();
+    _loadImg();
   }
 
-  Future<void> _loadImage() async {
-    // 1) 先查本地映射
-    final a = await AssetImageResolver.instance.assetFor(widget.recipe.name);
-    if (mounted) setState(() => _assetPath = a);
-
-    // 2) 若本地无映射，再尝试用已缓存/解析过的网络图（CI 拉不下来时兜底）
-    if (a == null) {
-      final url = await db.resolveAndCacheImage(widget.recipe.id!, widget.recipe.name);
-      if (mounted) setState(() => _netUrl = url);
-    }
+  Future<void> _loadImg() async {
+    // 优先用缓存image_url，若无则去维基解析并缓存
+    final url = await db.resolveAndCacheImage(widget.recipe.id!, widget.recipe.name);
+    setState(() => _img = url);
   }
 
   @override
@@ -42,41 +34,44 @@ class _RecipeInfoPageState extends State<RecipeInfoPage> {
     final text = (r.instructions?.trim().isNotEmpty ?? false)
         ? r.instructions!.trim() : '暂无做法，稍后补充～';
 
-    Widget img;
-    if (_assetPath != null) {
-      img = Image.asset(_assetPath!, fit: BoxFit.cover);
-    } else if (_netUrl != null) {
-      img = Image.network(
-        _netUrl!,
-        fit: BoxFit.cover,
-        errorBuilder: (_, __, ___) => _placeholder(),
-      );
-    } else {
-      img = const Center(child: CircularProgressIndicator());
-    }
-
     return Scaffold(
       appBar: AppBar(title: Text(r.name)),
       body: ListView(
         children: [
-          AspectRatio(aspectRatio: 16 / 9, child: img),
+          AspectRatio(
+            aspectRatio: 16 / 9,
+            child: _img == null
+                ? const Center(child: CircularProgressIndicator())
+                : Image.network(
+                    _img!,
+                    fit: BoxFit.cover,
+                    errorBuilder: (_, __, ___) => Container(
+                      color: Colors.grey.shade200,
+                      alignment: Alignment.center,
+                      child: const Text('图片加载失败'),
+                    ),
+                  ),
+          ),
           Padding(
             padding: const EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Wrap(spacing: 8, runSpacing: 8, children: [
-                  Chip(label: Text(r.cuisine.zh)),
-                  if (r.isCustom) const Chip(label: Text('自定义')),
-                ]),
+                Wrap(
+                  spacing: 8, runSpacing: 8,
+                  children: [
+                    Chip(label: Text(r.cuisine.zh)),
+                    if (r.isCustom) const Chip(label: Text('自定义')),
+                  ],
+                ),
                 const SizedBox(height: 12),
                 const Text('烹饪方法', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                 const SizedBox(height: 8),
                 SelectableText(text),
                 const SizedBox(height: 24),
                 FilledButton.icon(
-                  onPressed: () => Navigator.push(
-                    context, MaterialPageRoute(builder: (_) => RecipeDetailPage(recipe: r))),
+                  onPressed: () => Navigator.push(context,
+                    MaterialPageRoute(builder: (_) => RecipeDetailPage(recipe: r))),
                   icon: const Icon(Icons.list_alt),
                   label: const Text('查看/勾选原料清单'),
                 ),
@@ -100,10 +95,4 @@ class _RecipeInfoPageState extends State<RecipeInfoPage> {
       ),
     );
   }
-
-  Widget _placeholder() => Container(
-        color: Colors.grey.shade200,
-        alignment: Alignment.center,
-        child: const Text('图片加载失败'),
-      );
 }
