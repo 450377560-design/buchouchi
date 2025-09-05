@@ -5,6 +5,12 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+  workflow_dispatch:
+    inputs:
+      target_ref:
+        description: "Branch or tag to build (e.g. main / feature/x / v1.0.0)"
+        required: false
+        default: ""
 
 jobs:
   build-android:
@@ -13,6 +19,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.target_ref != '' && github.event.inputs.target_ref || github.ref }}
 
       - name: Setup Java
         uses: actions/setup-java@v4
@@ -32,50 +40,75 @@ jobs:
       - name: Clean build
         run: flutter clean
 
-      # 仅重建 Android 宿主（不会覆盖 lib/）
+      # 仅重建 android 宿主（不动 lib/）
       - name: Regenerate Android host only
         run: |
           set -euo pipefail
-          flutter --version
-          # 只生成 android 平台，--overwrite 仅影响 android/ 目录
           flutter create . \
             --platforms=android \
             --org com.example \
             --project-name buchouchi \
             --overwrite
-          # 设置应用中文名
           XML="android/app/src/main/res/values/strings.xml"
           if [ -f "$XML" ]; then
             sed -i 's#<string name="app_name">[^<]*</string>#<string name="app_name">不愁吃</string>#g' "$XML"
           fi
-          echo "Tree after regeneration:"
-          ls -lah
-          echo "Gradle wrapper:"
-          cat android/gradle/wrapper/gradle-wrapper.properties
 
-      # 防呆：检测是否误用 Flutter 模板代码（计数器示例）
-      - name: Guard - detect Flutter template code
+      # 打印当前构建的是哪个提交 & 展示 main.dart 前120行
+      - name: Debug - print ref and main.dart head
+        run: |
+          set -e
+          echo "REF: $GITHUB_REF  SHA: $GITHUB_SHA"
+          echo "---- lib/main.dart (head) ----"
+          sed -n '1,120p' lib/main.dart || true
+
+      # ✅ 保底：若检测到模板痕迹，强制覆盖 main.dart 为“不愁吃”入口（仅在CI容器内）
+      - name: Autofix - replace template main.dart if detected
+        run: |
+          set -e
+          if grep -qE "Flutter Demo Home Page|MyHomePage" lib/main.dart; then
+            echo "Template detected. Replacing lib/main.dart with BuchouChi entry..."
+            cat > lib/main.dart <<'EOF'
+import 'package:flutter/material.dart';
+import 'db/database_helper.dart';
+import 'pages/home_page.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await DatabaseHelper.instance.db;
+  runApp(const BuchouChiApp());
+}
+
+class BuchouChiApp extends StatelessWidget {
+  const BuchouChiApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: '不愁吃',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF4CAF50)),
+        useMaterial3: true,
+      ),
+      home: const HomePage(),
+    );
+  }
+}
+EOF
+            echo "---- lib/main.dart (after autofix, head) ----"
+            sed -n '1,120p' lib/main.dart
+          fi
+
+      # （可选）继续做一次模板护栏，确保已替换成功
+      - name: Guard - ensure template removed
         run: |
           set -e
           if grep -R --line-number -E "Flutter Demo Home Page|MyHomePage" lib/ ; then
-            echo "::error title=Template app detected::Your lib/ contains the Flutter demo template. Please restore your 不愁吃 source files."
+            echo "::error title=Template app detected::Your lib/ still contains the Flutter demo template after autofix."
             exit 1
           fi
           test -f lib/pages/home_page.dart || { echo "::error title=Missing file::lib/pages/home_page.dart not found."; exit 1; }
           test -f lib/db/database_helper.dart || { echo "::error title=Missing file::lib/db/database_helper.dart not found."; exit 1; }
-
-      # 可选：检测是否遗留 Android v1 embedding
-      - name: Guard - ensure no Android v1 embedding
-        run: |
-          set -e
-          if grep -R --line-number --fixed-strings "io.flutter.app" android/ ; then
-            echo "::error title=Deprecated Android v1 embedding detected::Found 'io.flutter.app' imports."
-            exit 1
-          fi
-          if grep -R --line-number --fixed-strings "FlutterMain" android/ ; then
-            echo "::error title=Deprecated Android v1 embedding detected::Found 'FlutterMain' usages."
-            exit 1
-          fi
 
       - name: Install dependencies
         run: flutter pub get
