@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/recipe.dart';
-import '../db/database_helper.dart';
+import '../models/cuisine.dart'; // ⬅️ 必须直接引入，才能使用 c.zh 扩展
 import 'recipe_detail_page.dart';
 
 class RecipeInfoPage extends StatelessWidget {
