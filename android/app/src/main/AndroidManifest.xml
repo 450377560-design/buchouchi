@@ -1,5 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.buchouchi">
+    <!-- Android 13- 以下读取相册需要的老权限；33+ 会使用系统 Photo Picker，不再需要权限 -->
+<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
 
     <application
         android:label="不愁吃"
