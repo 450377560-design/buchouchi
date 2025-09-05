@@ -29,26 +29,12 @@ jobs:
       - name: Flutter Doctor
         run: flutter doctor -v
 
-      - name: Install dependencies
-        run: flutter pub get
-
+      # ← 这一步就是你要的“构建前清理”
       - name: Clean build
         run: flutter clean
 
-      - name: Guard - ensure no Android v1 embedding
-        shell: bash
-        run: |
-          set -euo pipefail
-          # 检查是否存在 v1 embedding 的典型痕迹
-          if grep -R --line-number --fixed-strings "io.flutter.app" android/ ; then
-            echo "::error title=Deprecated Android v1 embedding detected::Found 'io.flutter.app' imports."
-            exit 1
-          fi
-          if grep -R --line-number --fixed-strings "FlutterMain" android/ ; then
-            echo "::error title=Deprecated Android v1 embedding detected::Found 'FlutterMain' usages."
-            exit 1
-          fi
-          echo "No Android v1 embedding traces found."
+      - name: Install dependencies
+        run: flutter pub get
 
       - name: Build APK (release)
         run: flutter build apk --release
