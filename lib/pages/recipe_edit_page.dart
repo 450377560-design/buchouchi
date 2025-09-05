@@ -10,9 +10,13 @@ import '../models/cuisine.dart';
 import '../models/recipe.dart';
 
 class RecipeEditPage extends StatefulWidget {
-  /// 传入 recipe 为编辑，不传则为新建
+  /// 传入 recipe 为编辑；不传则为新建
   final Recipe? recipe;
-  const RecipeEditPage({super.key, this.recipe});
+
+  /// 新建时的默认菜系（编辑时忽略）
+  final Cuisine? defaultCuisine;
+
+  const RecipeEditPage({super.key, this.recipe, this.defaultCuisine});
 
   @override
   State<RecipeEditPage> createState() => _RecipeEditPageState();
@@ -27,8 +31,8 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
   bool _saving = false;
 
   // 图片相关
-  String? _storedImage;     // 当前 DB 中的 image_url（file:// 或 http）
-  String? _pickedFilePath;  // 本次从相册选择后，复制到私有目录的绝对路径
+  String? _storedImage;     // DB 中的 image_url（file:// 或 http）
+  String? _pickedFilePath;  // 本次从相册复制到私有目录的绝对路径
   bool _clearRequested = false; // 用户选择“清除图片”
 
   final db = DatabaseHelper.instance;
@@ -38,12 +42,14 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
     super.initState();
     final r = widget.recipe;
     if (r != null) {
+      // 编辑
       _nameCtrl.text = r.name;
       _instCtrl.text = (r.instructions ?? '').trim();
       _cuisine = r.cuisine;
       _loadStoredImage(r.id!);
     } else {
-      _cuisine = Cuisine.chuancai;
+      // 新建
+      _cuisine = widget.defaultCuisine ?? Cuisine.chuancai;
       _instCtrl.text = _defaultStepsPreview();
     }
   }
@@ -67,22 +73,24 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
       final x = await picker.pickImage(source: ImageSource.gallery, maxWidth: 1600);
       if (x == null) return;
 
-      // 拷贝到 App 私有目录
       final dir = await getApplicationDocumentsDirectory();
       final ext = p.extension(x.path).toLowerCase();
       final stamp = DateTime.now().millisecondsSinceEpoch;
-      final fileName = 'recipe_${widget.recipe?.id ?? 'new'}_$stamp$ext';
+      final idPart = widget.recipe?.id?.toString() ?? 'new';
+      final fileName = 'recipe_${idPart}_$stamp$ext';
       final dest = p.join(dir.path, fileName);
       await File(x.path).copy(dest);
 
       setState(() {
         _pickedFilePath = dest;
-        _clearRequested = false; // 覆盖清除状态
+        _clearRequested = false;
       });
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('已从相册选择图片')),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('已从相册选择图片')),
+        );
+      }
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
@@ -119,23 +127,20 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
           imageUrl: null,
           instructions: instructions,
         );
-
         final newId = await db.addRecipe(newRecipe);
-        // 处理图片：若选择了图片，落库 file://path
+
         if (_pickedFilePath != null && File(_pickedFilePath!).existsSync()) {
           await db.setRecipeImage(newId, 'file://${_pickedFilePath!}');
         }
       } else {
-        // 编辑：更新基本信息
+        // 编辑
         final d = await db.db;
         await d.update('recipes', {
           'name': name,
           'cuisine': _cuisine.key,
           'instructions': instructions,
-          // is_custom 保持不改；如果想允许切换，这里可加开关
         }, where: 'id = ?', whereArgs: [widget.recipe!.id]);
 
-        // 处理图片
         if (_clearRequested) {
           await db.setRecipeImage(widget.recipe!.id!, null);
         } else if (_pickedFilePath != null && File(_pickedFilePath!).existsSync()) {
@@ -144,7 +149,7 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
       }
 
       if (!mounted) return;
-      Navigator.of(context).pop(true); // 返回上一页并标记成功
+      Navigator.of(context).pop(true);
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
@@ -156,7 +161,6 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
   }
 
   Widget _buildPreviewImage() {
-    // 优先显示：本次新选图 -> 已存 file:// -> (可选) 网络 -> 占位
     if (_pickedFilePath != null && File(_pickedFilePath!).existsSync()) {
       return Image.file(File(_pickedFilePath!), fit: BoxFit.cover);
     }
@@ -205,9 +209,9 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
               if (v == 'pick') _pickFromGallery();
               if (v == 'clear') _clearImage();
             },
-            itemBuilder: (_) => [
-              const PopupMenuItem(value: 'pick', child: Text('从相册选择图片')),
-              const PopupMenuItem(value: 'clear', child: Text('清除图片')),
+            itemBuilder: (_) => const [
+              PopupMenuItem(value: 'pick', child: Text('从相册选择图片')),
+              PopupMenuItem(value: 'clear', child: Text('清除图片')),
             ],
           ),
         ],
