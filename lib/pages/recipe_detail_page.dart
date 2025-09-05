@@ -14,7 +14,9 @@ class RecipeDetailPage extends StatefulWidget {
 class _RecipeDetailPageState extends State<RecipeDetailPage> {
   final db = DatabaseHelper.instance;
   late Future<List<Ingredient>> _future;
-  final _controller = TextEditingController();
+
+  final _addCtrl = TextEditingController();
+  final _qtyCtrl = TextEditingController();
 
   @override
   void initState() {
@@ -23,91 +25,97 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
   }
 
   Future<void> _refresh() async {
-    setState(() {
-      _future = db.getIngredients(widget.recipe.id!);
-    });
+    setState(() => _future = db.getIngredients(widget.recipe.id!));
+  }
+
+  @override
+  void dispose() {
+    _addCtrl.dispose();
+    _qtyCtrl.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final r = widget.recipe;
-
     return Scaffold(
-      appBar: AppBar(title: Text(r.name)),
+      appBar: AppBar(title: Text('${widget.recipe.name} · 原料')),
       body: FutureBuilder<List<Ingredient>>(
         future: _future,
         builder: (_, snap) {
           if (!snap.hasData) return const Center(child: CircularProgressIndicator());
           final list = snap.data!;
-          final ownedCount = list.where((e) => e.isOwned).length;
-          final needCount  = list.length - ownedCount;
-
-          return Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Row(
-                  children: [
-                    Chip(label: Text('已拥有：$ownedCount')),
-                    const SizedBox(width: 8),
-                    Chip(label: Text('待购买：$needCount')),
-                  ],
-                ),
-              ),
-              const Divider(height: 0),
-              Expanded(
-                child: ListView.separated(
-                  itemCount: list.length,
-                  separatorBuilder: (_, __) => const Divider(height: 0),
-                  itemBuilder: (_, i) {
-                    final ing = list[i];
-                    return CheckboxListTile(
-                      title: Text(ing.name),
-                      value: ing.isOwned,
-                      onChanged: (v) async {
-                        await db.setIngredientOwned(ing.id!, v ?? false);
-                        _refresh();
-                      },
-                    );
-                  },
-                ),
-              ),
-              const Divider(height: 0),
-              Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        controller: _controller,
-                        decoration: const InputDecoration(
-                          hintText: '添加自定义原料（回车或点+）',
-                          border: OutlineInputBorder(),
-                        ),
-                        onSubmitted: (_) => _add(),
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    ElevatedButton.icon(
-                      onPressed: _add,
-                      icon: const Icon(Icons.add),
-                      label: const Text('添加'),
-                    ),
-                  ],
-                ),
-              ),
-            ],
+          return ListView.separated(
+            padding: const EdgeInsets.fromLTRB(12, 12, 12, 90),
+            itemCount: list.length,
+            separatorBuilder: (_, __) => const Divider(height: 0),
+            itemBuilder: (_, i) {
+              final ing = list[i];
+              return CheckboxListTile(
+                value: ing.isOwned,
+                onChanged: (v) async {
+                  await db.setIngredientOwned(ing.id!, v ?? false);
+                  _refresh();
+                },
+                title: Text(ing.name),
+                subtitle: ing.suggestQty == null ? null : Text('建议：${ing.suggestQty}'),
+                controlAffinity: ListTileControlAffinity.leading,
+                secondary: ing.isCustom
+                    ? IconButton(
+                        tooltip: '删除该自定义原料',
+                        icon: const Icon(Icons.delete_outline),
+                        onPressed: () async {
+                          await db.deleteIngredient(ing.id!);
+                          _refresh();
+                        },
+                      )
+                    : null,
+              );
+            },
           );
         },
       ),
+      bottomSheet: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(12),
+          child: Row(
+            children: [
+              Expanded(
+                flex: 2,
+                child: TextField(
+                  controller: _addCtrl,
+                  decoration: const InputDecoration(
+                    labelText: '新增自定义原料',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: TextField(
+                  controller: _qtyCtrl,
+                  decoration: const InputDecoration(
+                    labelText: '推荐用量(可选)',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 8),
+              FilledButton(
+                onPressed: () async {
+                  final name = _addCtrl.text.trim();
+                  if (name.isEmpty) return;
+                  await db.addIngredient(widget.recipe.id!, name,
+                      suggestQty: _qtyCtrl.text.trim().isEmpty ? null : _qtyCtrl.text.trim());
+                  _addCtrl.clear();
+                  _qtyCtrl.clear();
+                  _refresh();
+                },
+                child: const Text('添加'),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
-  }
-
-  Future<void> _add() async {
-    final txt = _controller.text.trim();
-    if (txt.isEmpty) return;
-    await db.addIngredient(widget.recipe.id!, txt);
-    _controller.clear();
-    _refresh();
   }
 }
