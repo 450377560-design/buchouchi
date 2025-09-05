@@ -85,14 +85,19 @@ class _RecipeListPageState extends State<RecipeListPage> {
           );
         },
       ),
-      floatingActionButton: FloatingActionButton(
+
+      floatingActionButton: FloatingActionButton.extended(
         onPressed: () async {
-          await Navigator.push(context, MaterialPageRoute(
-            builder: (_) => RecipeEditPage(defaultCuisine: widget.cuisine),
-          ));
-          _refresh();
+          final ok = await Navigator.push<bool>(
+            context,
+            MaterialPageRoute(
+              builder: (_) => RecipeEditPage(defaultCuisine: widget.cuisine),
+            ),
+          );
+          if (ok == true && mounted) setState(() {});
         },
-        child: const Icon(Icons.add),
+        icon: const Icon(Icons.add),
+        abel: const Text('新增菜谱'),
       ),
     );
   }
