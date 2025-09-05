@@ -17,7 +17,8 @@ class DatabaseHelper {
   // v3: ingredients 加 is_custom、suggest_qty
   // v4: 今日食谱 & 用量自定义表
   // v5: 升级时导入 assets/recipes/seed_more.json（去重导入）
-  static const _dbVersion = 5;
+  // v6: today_custom_qty 增加 owned 列；提供 setTodayIngredientOwned；汇总返回 owned
+  static const _dbVersion = 6;
 
   Database? _db;
 
@@ -76,6 +77,7 @@ class DatabaseHelper {
         dt TEXT NOT NULL,
         name TEXT NOT NULL,
         user_qty TEXT,
+        owned INTEGER NOT NULL DEFAULT 0,
         PRIMARY KEY (dt, name)
       );
     ''');
@@ -108,6 +110,7 @@ class DatabaseHelper {
           dt TEXT NOT NULL,
           name TEXT NOT NULL,
           user_qty TEXT,
+          owned INTEGER NOT NULL DEFAULT 0,
           PRIMARY KEY (dt, name)
         );
       ''');
@@ -115,6 +118,12 @@ class DatabaseHelper {
     // v5：升级时也导入一次最新 seeds（安全去重，不覆盖已存在）
     if (oldVersion < 5) {
       await _importFromAssetIfAny(db, 'assets/recipes/seed_more.json');
+    }
+    // v6：补 owned 列（如果已存在会抛错，这里忽略即可）
+    if (oldVersion < 6) {
+      try {
+        await db.execute('ALTER TABLE today_custom_qty ADD COLUMN owned INTEGER NOT NULL DEFAULT 0;');
+      } catch (_) {}
     }
   }
 
@@ -206,8 +215,12 @@ class DatabaseHelper {
         final name = (item['name'] ?? '').toString().trim();
         if (name.isEmpty) continue;
         final cuisine = CuisineX.fromKey((item['cuisine'] ?? 'custom').toString());
-        final exists = (await db.query('recipes',
-          where: 'name = ? AND cuisine = ?', whereArgs: [name, cuisine.key])).isNotEmpty;
+        final exists = (await db.query(
+          'recipes',
+          where: 'name = ? AND cuisine = ?',
+          whereArgs: [name, cuisine.key],
+        ))
+            .isNotEmpty;
         if (exists) continue;
 
         final rid = await db.insert('recipes', {
@@ -246,12 +259,13 @@ class DatabaseHelper {
 
   Future<List<Recipe>> getCustomRecipes() async {
     final d = await db;
-    final maps = await d.query('recipes',
-        where: 'is_custom = 1', orderBy: 'id DESC');
+    final maps =
+        await d.query('recipes', where: 'is_custom = 1', orderBy: 'id DESC');
     return maps.map(Recipe.fromMap).toList();
   }
 
-  Future<int> addRecipe(Recipe r, {List<Map<String,String>> initIngredients = const []}) async {
+  Future<int> addRecipe(Recipe r,
+      {List<Map<String, String>> initIngredients = const []}) async {
     final d = await db;
     final rid = await d.insert('recipes', r.toMap());
     for (final m in initIngredients) {
@@ -305,7 +319,8 @@ class DatabaseHelper {
   }
 
   // ================== 今日食谱 ==================
-  String get today => DateTime.now().toLocal().toIso8601String().substring(0,10);
+  String get today =>
+      DateTime.now().toLocal().toIso8601String().substring(0, 10);
 
   Future<void> toggleToday(int recipeId, {bool? setTo}) async {
     final d = await db;
@@ -333,10 +348,11 @@ class DatabaseHelper {
     return rows.map(Recipe.fromMap).toList();
   }
 
-  /// 汇总“今日食谱”的去重原料；返回：[{'name','suggest','user'}]
-  Future<List<Map<String,String?>>> getTodayIngredientSummary() async {
+  /// 汇总“今日食谱”的去重原料；返回每行：name / suggest / user / owned
+  Future<List<Map<String, dynamic>>> getTodayIngredientSummary() async {
     final d = await db;
     final dt = today;
+
     final rows = await d.rawQuery('''
       SELECT i.name, GROUP_CONCAT(i.suggest_qty, ' + ') AS suggest
       FROM ingredients i
@@ -345,58 +361,98 @@ class DatabaseHelper {
       ORDER BY i.name COLLATE NOCASE ASC
     ''', [dt]);
 
-    final customRows = await d.query('today_custom_qty',
-        where: 'dt = ?', whereArgs: [dt]);
-    final customMap = {
-      for (final r in customRows) r['name'] as String : r['user_qty'] as String?
+    final customRows =
+        await d.query('today_custom_qty', where: 'dt = ?', whereArgs: [dt]);
+    final customMap = <String, Map<String, dynamic>>{
+      for (final r in customRows)
+        r['name'] as String: {
+          'user_qty': r['user_qty'],
+          'owned': (r['owned'] as int? ?? 0) == 1,
+        }
     };
 
-    return rows.map((r) => {
-      'name': r['name'] as String,
-      'suggest': (r['suggest'] as String?)?.isEmpty ?? true
-          ? null
-          : r['suggest'] as String?,
-      'user': customMap[r['name'] as String],
-    }).toList();
+    return rows
+        .map((r) => {
+              'name': r['name'] as String,
+              'suggest': ((r['suggest'] as String?)?.isEmpty ?? true)
+                  ? null
+                  : r['suggest'],
+              'user': customMap[(r['name'] as String)]?['user_qty'] as String?,
+              'owned':
+                  customMap[(r['name'] as String)]?['owned'] as bool? ?? false,
+            })
+        .toList();
   }
 
   Future<void> upsertTodayUserQty(String name, String? userQty) async {
     final d = await db;
     final dt = today;
-    await d.insert('today_custom_qty',
+    // 先插入（若不存在），再只更新 user_qty —— 避免覆盖已有的 owned 状态
+    await d.insert(
+      'today_custom_qty',
       {'dt': dt, 'name': name, 'user_qty': userQty},
-      conflictAlgorithm: ConflictAlgorithm.replace);
+      conflictAlgorithm: ConflictAlgorithm.ignore,
+    );
+    await d.update(
+      'today_custom_qty',
+      {'user_qty': userQty},
+      where: 'dt = ? AND name = ?',
+      whereArgs: [dt, name],
+    );
+  }
+
+  /// 勾选/取消“今日食材清单”的【已有】状态
+  Future<void> setTodayIngredientOwned(String name, bool owned) async {
+    final d = await db;
+    final dt = today;
+    await d.insert(
+      'today_custom_qty',
+      {'dt': dt, 'name': name, 'owned': owned ? 1 : 0},
+      conflictAlgorithm: ConflictAlgorithm.ignore,
+    );
+    await d.update(
+      'today_custom_qty',
+      {'owned': owned ? 1 : 0},
+      where: 'dt = ? AND name = ?',
+      whereArgs: [dt, name],
+    );
   }
 
   // ============ 网络图片兜底（维基百科）并缓存到 recipes.image_url ============
   Future<String?> resolveAndCacheImage(int recipeId, String name) async {
     final d = await db;
     // 先看有没有缓存
-    final rec = await d.query('recipes', where: 'id = ?', whereArgs: [recipeId], limit: 1);
-    if (rec.isNotEmpty && (rec.first['image_url'] as String?)?.isNotEmpty == true) {
+    final rec =
+        await d.query('recipes', where: 'id = ?', whereArgs: [recipeId], limit: 1);
+    if (rec.isNotEmpty &&
+        (rec.first['image_url'] as String?)?.isNotEmpty == true) {
       return rec.first['image_url'] as String;
     }
-    final url = await _wikipediaThumb(name) ?? await _wikipediaThumb(name, lang: 'en');
+    final url =
+        await _wikipediaThumb(name) ?? await _wikipediaThumb(name, lang: 'en');
     if (url != null) {
-      await d.update('recipes', {'image_url': url}, where: 'id = ?', whereArgs: [recipeId]);
+      await d.update('recipes', {'image_url': url},
+          where: 'id = ?', whereArgs: [recipeId]);
     }
     return url;
   }
 
   Future<String?> _wikipediaThumb(String title, {String lang = 'zh'}) async {
     try {
-      final api = Uri.https('$lang.wikipedia.org', '/api/rest_v1/page/summary/$title');
+      final api =
+          Uri.https('$lang.wikipedia.org', '/api/rest_v1/page/summary/$title');
       final resp = await http.get(api);
       if (resp.statusCode == 200) {
         final j = json.decode(utf8.decode(resp.bodyBytes));
-        final thumb = j['originalimage']?['source'] ?? j['thumbnail']?['source'];
+        final thumb =
+            j['originalimage']?['source'] ?? j['thumbnail']?['source'];
         if (thumb is String && thumb.isNotEmpty) return thumb;
       }
     } catch (_) {}
     return null;
   }
 
-    /// 设置/清除某菜谱图片路径（可为 file://... 或本地绝对路径，或 http(s)）
+  /// 设置/清除某菜谱图片路径（可为 file://... 或本地绝对路径，或 http(s)）
   Future<void> setRecipeImage(int recipeId, String? pathOrUrl) async {
     final d = await db;
     await d.update('recipes', {'image_url': pathOrUrl},
