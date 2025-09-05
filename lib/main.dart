@@ -4,7 +4,7 @@ import 'pages/home_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // 初始化并预置八大菜系样例
+  // 初始化数据库（含八大菜系示例）
   await DatabaseHelper.instance.db;
   runApp(const BuchouChiApp());
 }
