@@ -3,10 +3,9 @@
 
     <application
         android:label="不愁吃"
-        android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
-            android:name=".MainActivity"
+            android:name="com.example.buchouchi.MainActivity"
             android:exported="true"
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"
@@ -15,12 +14,15 @@
             android:windowSoftInputMode="adjustResize">
 
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
         </activity>
 
-        <meta-data android:name="flutterEmbedding" android:value="2" />
+        <!-- 明确声明使用 v2 embedding -->
+        <meta-data
+            android:name="flutterEmbedding"
+            android:value="2" />
     </application>
 </manifest>
