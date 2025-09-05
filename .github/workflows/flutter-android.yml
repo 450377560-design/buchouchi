@@ -54,7 +54,6 @@ jobs:
             sed -i 's#<string name="app_name">[^<]*</string>#<string name="app_name">不愁吃</string>#g' "$XML"
           fi
 
-      # 打印当前构建的是哪个提交 & 展示 main.dart 前120行
       - name: Debug - print ref and main.dart head
         run: |
           set -e
@@ -62,7 +61,7 @@ jobs:
           echo "---- lib/main.dart (head) ----"
           sed -n '1,120p' lib/main.dart || true
 
-      # ✅ 保底：若检测到模板痕迹，强制覆盖 main.dart 为“不愁吃”入口（仅在CI容器内）
+      # 若检测到模板，强制覆盖 main.dart（仅在 CI 容器内）
       - name: Autofix - replace template main.dart if detected
         run: |
           set -e
@@ -99,7 +98,6 @@ EOF
             sed -n '1,120p' lib/main.dart
           fi
 
-      # （可选）继续做一次模板护栏，确保已替换成功
       - name: Guard - ensure template removed
         run: |
           set -e
