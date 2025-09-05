@@ -60,9 +60,11 @@ class _RecipeListPageState extends State<RecipeListPage> {
                         icon: const Icon(Icons.today),
                         onPressed: () async {
                           await db.toggleToday(r.id!);
-                          if (mounted) ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('已切换 ${r.name} 的“今日食谱”状态')),
-                          );
+                          if (mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('已切换 ${r.name} 的“今日食谱”状态')),
+                            );
+                          }
                         },
                       ),
                       IconButton(
@@ -85,7 +87,6 @@ class _RecipeListPageState extends State<RecipeListPage> {
           );
         },
       ),
-
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () async {
           final ok = await Navigator.push<bool>(
@@ -97,7 +98,7 @@ class _RecipeListPageState extends State<RecipeListPage> {
           if (ok == true && mounted) setState(() {});
         },
         icon: const Icon(Icons.add),
-        abel: const Text('新增菜谱'),
+        label: const Text('新增菜谱'), // <- 这里修正了 label
       ),
     );
   }
