@@ -1,16 +1,73 @@
-buildscript {
-    repositories {
-        google()
-        mavenCentral()
+plugins {
+    id "com.android.application"
+    id "kotlin-android"
+    // Flutter Gradle 插件（随 Flutter 安装提供）
+    id "dev.flutter.flutter-gradle-plugin"
+}
+
+android {
+    // ⚠️ 改成你的实际包名，通常与 AndroidManifest.xml 的 package 一致
+    namespace "com.example.buchouchi"
+
+    compileSdkVersion flutter.compileSdkVersion
+    ndkVersion flutter.ndkVersion
+
+    defaultConfig {
+        // ⚠️ 同上，保持与 namespace 一致即可（用于安装包名）
+        applicationId "com.example.buchouchi"
+
+        minSdkVersion flutter.minSdkVersion
+        targetSdkVersion flutter.targetSdkVersion
+
+        versionCode flutter.versionCode
+        versionName flutter.versionName
+
+        // 需要时可开启 MultiDex（一般 Flutter 不用）
+        // multiDexEnabled true
     }
-    dependencies {
-        // 空即可；AGP/Kotlin 已在 settings.gradle 的 plugins 块声明
+
+    // 资源/打包冲突排除（常见冗余许可证）
+    packagingOptions {
+        resources {
+            excludes += ['META-INF/AL2.0', 'META-INF/LGPL2.1']
+        }
+    }
+
+    buildTypes {
+        release {
+            // ✅ 代码混淆 + 资源收缩（显著减小 APK 体积）
+            minifyEnabled true
+            shrinkResources true
+
+            // 使用 Android 默认 proguard 规则 + 本地规则
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            // 如需自定义签名，这里配置 signingConfigs.release
+            // 否则 flutter build 会按默认方式签名/或产出未签名包（CI 安装可用）
+        }
+        debug {
+            // 保持默认
+            // minifyEnabled false
+            // shrinkResources false
+        }
+    }
+
+    // Java/Kotlin 17（匹配你 CI 的 Temurin 17）
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    kotlinOptions {
+        jvmTarget = '17'
     }
 }
 
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
-    }
+// 告诉 Flutter 源码路径（固定写法）
+flutter {
+    source '../..'
+}
+
+// 这里通常不需要额外依赖；Flutter/插件会自动注入
+dependencies {
+    // implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.24" // 如无 Kotlin 源码，可不写
 }
