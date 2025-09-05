@@ -54,6 +54,7 @@ jobs:
             sed -i 's#<string name="app_name">[^<]*</string>#<string name="app_name">不愁吃</string>#g' "$XML"
           fi
 
+      # 打印当前构建的提交以及 main.dart 头部，方便核对
       - name: Debug - print ref and main.dart head
         run: |
           set -e
@@ -61,43 +62,44 @@ jobs:
           echo "---- lib/main.dart (head) ----"
           sed -n '1,120p' lib/main.dart || true
 
-      # 若检测到模板，强制覆盖 main.dart（仅在 CI 容器内）
-      - name: Autofix - replace template main.dart if detected
+      # ✅ 保底：若检测到模板痕迹，改用 printf 生成正确的 main.dart（避免 heredoc 缩进问题）
+      - name: Autofix - replace template main.dart if detected (no heredoc)
         run: |
           set -e
           if grep -qE "Flutter Demo Home Page|MyHomePage" lib/main.dart; then
             echo "Template detected. Replacing lib/main.dart with BuchouChi entry..."
-            cat > lib/main.dart <<'EOF'
-import 'package:flutter/material.dart';
-import 'db/database_helper.dart';
-import 'pages/home_page.dart';
-
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await DatabaseHelper.instance.db;
-  runApp(const BuchouChiApp());
-}
-
-class BuchouChiApp extends StatelessWidget {
-  const BuchouChiApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: '不愁吃',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF4CAF50)),
-        useMaterial3: true,
-      ),
-      home: const HomePage(),
-    );
-  }
-}
-EOF
+            printf "%s\n" \
+              "import 'package:flutter/material.dart';" \
+              "import 'db/database_helper.dart';" \
+              "import 'pages/home_page.dart';" \
+              "" \
+              "void main() async {" \
+              "  WidgetsFlutterBinding.ensureInitialized();" \
+              "  await DatabaseHelper.instance.db;" \
+              "  runApp(const BuchouChiApp());" \
+              "}" \
+              "" \
+              "class BuchouChiApp extends StatelessWidget {" \
+              "  const BuchouChiApp({super.key});" \
+              "" \
+              "  @override" \
+              "  Widget build(BuildContext context) {" \
+              "    return MaterialApp(" \
+              "      title: '不愁吃'," \
+              "      theme: ThemeData(" \
+              "        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF4CAF50))," \
+              "        useMaterial3: true," \
+              "      )," \
+              "      home: const HomePage()," \
+              "    );" \
+              "  }" \
+              "}" \
+              > lib/main.dart
             echo "---- lib/main.dart (after autofix, head) ----"
             sed -n '1,120p' lib/main.dart
           fi
 
+      # 再做一次护栏，确保模板已清除且关键文件存在
       - name: Guard - ensure template removed
         run: |
           set -e
