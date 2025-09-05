@@ -1,0 +1,90 @@
+name: Android CI (Flutter)
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-android:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Flutter Doctor
+        run: flutter doctor -v
+
+      - name: Clean build
+        run: flutter clean
+
+      # 仅重建 Android 宿主（不会覆盖 lib/）
+      - name: Regenerate Android host only
+        run: |
+          set -euo pipefail
+          flutter --version
+          # 只生成 android 平台，--overwrite 仅影响 android/ 目录
+          flutter create . \
+            --platforms=android \
+            --org com.example \
+            --project-name buchouchi \
+            --overwrite
+          # 设置应用中文名
+          XML="android/app/src/main/res/values/strings.xml"
+          if [ -f "$XML" ]; then
+            sed -i 's#<string name="app_name">[^<]*</string>#<string name="app_name">不愁吃</string>#g' "$XML"
+          fi
+          echo "Tree after regeneration:"
+          ls -lah
+          echo "Gradle wrapper:"
+          cat android/gradle/wrapper/gradle-wrapper.properties
+
+      # 防呆：检测是否误用 Flutter 模板代码（计数器示例）
+      - name: Guard - detect Flutter template code
+        run: |
+          set -e
+          if grep -R --line-number -E "Flutter Demo Home Page|MyHomePage" lib/ ; then
+            echo "::error title=Template app detected::Your lib/ contains the Flutter demo template. Please restore your 不愁吃 source files."
+            exit 1
+          fi
+          test -f lib/pages/home_page.dart || { echo "::error title=Missing file::lib/pages/home_page.dart not found."; exit 1; }
+          test -f lib/db/database_helper.dart || { echo "::error title=Missing file::lib/db/database_helper.dart not found."; exit 1; }
+
+      # 可选：检测是否遗留 Android v1 embedding
+      - name: Guard - ensure no Android v1 embedding
+        run: |
+          set -e
+          if grep -R --line-number --fixed-strings "io.flutter.app" android/ ; then
+            echo "::error title=Deprecated Android v1 embedding detected::Found 'io.flutter.app' imports."
+            exit 1
+          fi
+          if grep -R --line-number --fixed-strings "FlutterMain" android/ ; then
+            echo "::error title=Deprecated Android v1 embedding detected::Found 'FlutterMain' usages."
+            exit 1
+          fi
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build APK (release)
+        run: flutter build apk --release
+
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: buchouchi-app-release
+          path: build/app/outputs/flutter-apk/app-release.apk
