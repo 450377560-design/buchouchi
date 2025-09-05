@@ -1,0 +1,16 @@
+[
+  {
+    "name": "鱼香肉丝",
+    "cuisine": "chuancai",
+    "image_url": "",
+    "instructions": "1) 里脊切丝腌制；2) 炒香豆瓣、泡椒与蒜姜；3) 下肉丝与配菜；4) 加糖醋、生抽水淀粉收汁。",
+    "ingredients": [
+      { "name": "里脊肉", "suggest": "300g" },
+      { "name": "泡椒" },
+      { "name": "木耳" },
+      { "name": "胡萝卜" }
+    ]
+  }
+  // ……你可以继续在此文件内追加任意数量的菜，字段同上；
+  // cuisine 取值：chuancai/yuecai/sucai/zhecai/mincai/xiangcai/huicai/lucai/custom
+]
