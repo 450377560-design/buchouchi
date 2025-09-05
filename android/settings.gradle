@@ -1,24 +1,31 @@
 pluginManagement {
-    def flutterSdkPath = {
-        def r = System.env.FLUTTER_ROOT
-        if (r != null) return r
-        return file("../../flutter.sdk").exists() ? file("../../flutter.sdk").absolutePath : null
-    }()
+    // 兼容多种环境：优先用 FLUTTER_ROOT，其次读 local.properties
+    def flutterSdkPath = System.getenv("FLUTTER_ROOT")
+    if (flutterSdkPath == null || flutterSdkPath.trim().isEmpty()) {
+        def props = new Properties()
+        def lp = new File(rootDir, "local.properties")
+        if (lp.exists()) {
+            lp.withInputStream { props.load(it) }
+            flutterSdkPath = props.getProperty("flutter.sdk")
+        }
+    }
+    assert flutterSdkPath != null && flutterSdkPath.trim(), "Flutter SDK path not found. Set FLUTTER_ROOT env or flutter.sdk in local.properties."
+
+    // ✅ 使用 includeBuild 方式引入 Flutter 的 Gradle 插件（最稳妥）
+    includeBuild("${flutterSdkPath}/packages/flutter_tools/gradle")
+
     repositories {
         google()
         mavenCentral()
         gradlePluginPortal()
-        if (flutterSdkPath != null) {
-            maven {
-                url "${flutterSdkPath}/packages/flutter_tools/gradle"
-            }
-        }
     }
 }
 
 plugins {
+    // Flutter 的插件加载器（版本 1.0.0 即可）
     id "dev.flutter.flutter-plugin-loader" version "1.0.0"
-    id "com.android.application" version "8.3.2" apply false
+    // 建议使用较新的 AGP 与 Kotlin（与 Flutter stable 匹配）
+    id "com.android.application" version "8.6.0" apply false
     id "org.jetbrains.kotlin.android" version "1.9.24" apply false
 }
 
