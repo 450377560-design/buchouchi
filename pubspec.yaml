@@ -11,6 +11,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   sqflite: ^2.3.3
   path: ^1.9.0
+  http: ^1.2.2
 
 dev_dependencies:
   flutter_test:
@@ -19,3 +20,8 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/recipes/seed_more.json
+    - assets/recipes/images.json       # ⬅️ 映射表（CI 会自动生成/更新）
+    - assets/recipes/seed_names.txt    # ⬅️ 料理名清单（我们提供初始版本）
+    - assets/images/                   # ⬅️ 本地图片目录（CI 会把图片存进来）
