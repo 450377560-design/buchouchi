@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../db/database_helper.dart';
 import '../models/recipe.dart';
 import 'today_ingredients_page.dart';
+import '../models/cuisine.dart';
+
 
 class TodayPage extends StatefulWidget {
   const TodayPage({super.key});
