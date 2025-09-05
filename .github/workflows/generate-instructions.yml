@@ -1,0 +1,37 @@
+name: Generate Instructions TSV and Merge to Seed
+
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate instructions.tsv
+        run: |
+          python3 scripts/generate_instructions_tsv.py
+          echo "Preview instructions.tsv head:"
+          sed -n '1,40p' assets/recipes/instructions/instructions.tsv || true
+
+      - name: Merge TSV -> seed_more.json
+        run: |
+          python3 scripts/merge_instructions_into_seed.py
+          echo "Preview seed_more.json:"
+          sed -n '1,200p' assets/recipes/seed_more.json || true
+
+      - name: Commit & push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/recipes/instructions/instructions.tsv assets/recipes/seed_more.json
+          if git diff --cached --quiet; then
+            echo "No changes."
+          else
+            git commit -m "feat(recipes): auto-generate instructions.tsv and merge into seed_more.json"
+            git push
+          fi
