@@ -15,6 +15,8 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
   final _formKey = GlobalKey<FormState>();
   final _name = TextEditingController();
   final _ings = TextEditingController();
+  final _imageUrl = TextEditingController();
+  final _instructions = TextEditingController();
 
   Cuisine _cuisine = Cuisine.custom;
   bool _saving = false;
@@ -66,6 +68,25 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
               ),
               const SizedBox(height: 16),
               TextFormField(
+                controller: _imageUrl,
+                decoration: const InputDecoration(
+                  labelText: '图片 URL（可选，不填则用占位图）',
+                  hintText: 'https://...',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _instructions,
+                decoration: const InputDecoration(
+                  labelText: '烹饪方法（可选，支持多行）',
+                  hintText: '例如：1) 处理食材... 2) 起锅烧油...',
+                  border: OutlineInputBorder(),
+                ),
+                maxLines: 6,
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
                 controller: _ings,
                 decoration: const InputDecoration(
                   labelText: '初始原料（逗号分隔，可留空）',
@@ -96,6 +117,8 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
         name: _name.text.trim(),
         cuisine: _cuisine,
         isCustom: true,
+        imageUrl: _imageUrl.text.trim().isEmpty ? null : _imageUrl.text.trim(),
+        instructions: _instructions.text.trim().isEmpty ? null : _instructions.text.trim(),
       );
       final ingList = _ings.text
           .split(',')
