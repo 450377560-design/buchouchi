@@ -395,4 +395,21 @@ class DatabaseHelper {
     } catch (_) {}
     return null;
   }
+
+    /// 设置/清除某菜谱图片路径（可为 file://... 或本地绝对路径，或 http(s)）
+  Future<void> setRecipeImage(int recipeId, String? pathOrUrl) async {
+    final d = await db;
+    await d.update('recipes', {'image_url': pathOrUrl},
+        where: 'id = ?', whereArgs: [recipeId]);
+  }
+
+  /// 读取某个菜谱的最新 image_url（用于刷新 UI）
+  Future<String?> getRecipeImage(int recipeId) async {
+    final d = await db;
+    final rows = await d.query('recipes', columns: ['image_url'],
+        where: 'id = ?', whereArgs: [recipeId], limit: 1);
+    if (rows.isEmpty) return null;
+    final v = rows.first['image_url'] as String?;
+    return (v == null || v.isEmpty) ? null : v;
+  }
 }
