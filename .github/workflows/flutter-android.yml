@@ -34,25 +34,37 @@ jobs:
           channel: stable
           cache: true
 
-      - name: Show refs
+      # 🔎 自动探测 Flutter 项目目录（根目录 or buchouchi/）
+      - name: Detect project directory
+        id: detect
+        run: |
+          set -e
+          if [ -f pubspec.yaml ] && [ -d lib ]; then
+            echo "PROJ_DIR=." >> $GITHUB_ENV
+            echo "Project dir = ."
+          elif [ -f buchouchi/pubspec.yaml ] && [ -d buchouchi/lib ]; then
+            echo "PROJ_DIR=buchouchi" >> $GITHUB_ENV
+            echo "Project dir = buchouchi"
+          else
+            echo "::error ::No Flutter project found. pubspec.yaml/lib not present in root or buchouchi/"
+            exit 1
+          fi
+
+      - name: Show refs and tree
         run: |
           echo "REF: $GITHUB_REF"
           echo "SHA: $GITHUB_SHA"
-
-      - name: Guard - ensure project root
-        run: |
-          set -e
-          ls -lah
-          test -f pubspec.yaml || { echo "::error ::pubspec.yaml not found"; exit 1; }
-          test -d lib || { echo "::error ::lib/ directory not found"; exit 1; }
+          echo "Working in: ${{ env.PROJ_DIR }}"
+          ls -lah "${{ env.PROJ_DIR }}"
 
       - name: Flutter Doctor
         run: flutter doctor -v
 
       - name: Clean build
         run: flutter clean
+        working-directory: ${{ env.PROJ_DIR }}
 
-      # 在临时目录重建 Android 宿主，仅把 android/ 拷回，避免触碰 lib/ 与 pubspec.yaml
+      # 在临时目录重建 Android 宿主，仅拷回 android/
       - name: Recreate android host in temp (do not touch lib/ or pubspec)
         run: |
           set -euo pipefail
@@ -66,17 +78,27 @@ jobs:
               --project-name buchouchi
           )
           rm -rf android
-          cp -a "$tmpdir/host/android" ./android
+          rsync -a "$tmpdir/host/android/" android/
+          # 应用中文名
           XML="android/app/src/main/res/values/strings.xml"
           if [ -f "$XML" ]; then
             sed -i 's#<string name="app_name">[^<]*</string>#<string name="app_name">不愁吃</string>#g' "$XML"
           fi
-          echo "---- android/settings.gradle ----"
-          sed -n '1,200p' android/settings.gradle
-          echo "---- gradle wrapper ----"
-          cat android/gradle/wrapper/gradle-wrapper.properties
 
-      # ✅ 关键：确保 pubspec.yaml 中有 sqflite & path（没有就自动添加）
+          echo "---- android tree (first 2 levels) ----"
+          find android -maxdepth 2 -type f | sort
+
+          echo "---- android/settings.gradle ----"
+          sed -n '1,200p' android/settings.gradle || true
+
+          echo "---- android/app/build.gradle ----"
+          sed -n '1,200p' android/app/build.gradle || true
+
+          echo "---- gradle wrapper ----"
+          cat android/gradle/wrapper/gradle-wrapper.properties || true
+        working-directory: ${{ env.PROJ_DIR }}
+
+      # ✅ 确保依赖存在（缺就自动添加）
       - name: Ensure sqflite & path deps
         run: |
           set -e
@@ -99,9 +121,11 @@ jobs:
 
           echo "---- pubspec.yaml (after) ----"
           sed -n '1,200p' pubspec.yaml
+        working-directory: ${{ env.PROJ_DIR }}
 
       - name: Install dependencies
         run: flutter pub get
+        working-directory: ${{ env.PROJ_DIR }}
 
       # 保障：确认 lock 文件里真的解析到了 sqflite/path；否则直接失败（早于编译报错）
       - name: Verify deps resolved in pubspec.lock
@@ -110,6 +134,7 @@ jobs:
           grep -q "sqflite" pubspec.lock || { echo "::error ::sqflite not found in pubspec.lock"; sed -n '1,200p' pubspec.lock || true; exit 1; }
           grep -q "path:" pubspec.lock || { echo "::error ::path not found in pubspec.lock"; sed -n '1,200p' pubspec.lock || true; exit 1; }
           echo "✅ sqflite & path are resolved."
+        working-directory: ${{ env.PROJ_DIR }}
 
       # 若 main.dart 仍是计数器模板，CI 容器内自动替换（不改你的仓库）
       - name: Autofix - replace template main.dart if detected
@@ -146,6 +171,7 @@ jobs:
               > lib/main.dart
             sed -n '1,120p' lib/main.dart
           fi
+        working-directory: ${{ env.PROJ_DIR }}
 
       - name: Guard - ensure template removed
         run: |
@@ -156,12 +182,14 @@ jobs:
           fi
           test -f lib/pages/home_page.dart || { echo "::error ::lib/pages/home_page.dart not found"; exit 1; }
           test -f lib/db/database_helper.dart || { echo "::error ::lib/db/database_helper.dart not found"; exit 1; }
+        working-directory: ${{ env.PROJ_DIR }}
 
       - name: Build APK (release)
         run: flutter build apk --release
+        working-directory: ${{ env.PROJ_DIR }}
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
           name: buchouchi-app-release
-          path: build/app/outputs/flutter-apk/app-release.apk
+          path: ${{ env.PROJ_DIR }}/build/app/outputs/flutter-apk/app-release.apk
