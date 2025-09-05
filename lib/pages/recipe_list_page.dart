@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/cuisine.dart';
 import '../models/recipe.dart';
 import '../db/database_helper.dart';
-import 'recipe_detail_page.dart';
+import 'recipe_info_page.dart';
 import 'recipe_edit_page.dart';
 
 class RecipeListPage extends StatefulWidget {
@@ -69,7 +69,7 @@ class _RecipeListPageState extends State<RecipeListPage> {
                   ),
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(
-                      builder: (_) => RecipeDetailPage(recipe: r),
+                      builder: (_) => RecipeInfoPage(recipe: r),
                     )).then((_) => _refresh());
                   },
                 );
