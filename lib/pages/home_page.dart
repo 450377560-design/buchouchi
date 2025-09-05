@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/cuisine.dart';
 import 'recipe_list_page.dart';
 import 'recipe_edit_page.dart';
+import 'today_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -15,7 +16,18 @@ class _HomePageState extends State<HomePage> {
     final items = [...CuisineX.eight, Cuisine.custom];
 
     return Scaffold(
-      appBar: AppBar(title: const Text('不愁吃')),
+      appBar: AppBar(
+        title: const Text('不愁吃'),
+        actions: [
+          IconButton(
+            tooltip: '今日食谱',
+            icon: const Icon(Icons.today),
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (_) => const TodayPage()));
+            },
+          ),
+        ],
+      ),
       body: GridView.builder(
         padding: const EdgeInsets.all(12),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
