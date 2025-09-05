@@ -1,16 +1,1122 @@
 [
   {
+    "name": "宫保鸡丁",
+    "cuisine": "chuancai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《宫保鸡丁》。",
+    "ingredients": []
+  },
+  {
+    "name": "麻婆豆腐",
+    "cuisine": "chuancai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《麻婆豆腐》。",
+    "ingredients": []
+  },
+  {
     "name": "鱼香肉丝",
     "cuisine": "chuancai",
     "image_url": "",
-    "instructions": "1) 里脊切丝腌制；2) 炒香豆瓣、泡椒与蒜姜；3) 下肉丝与配菜；4) 加糖醋、生抽水淀粉收汁。",
-    "ingredients": [
-      { "name": "里脊肉", "suggest": "300g" },
-      { "name": "泡椒" },
-      { "name": "木耳" },
-      { "name": "胡萝卜" }
-    ]
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《鱼香肉丝》。",
+    "ingredients": []
+  },
+  {
+    "name": "回锅肉",
+    "cuisine": "chuancai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《回锅肉》。",
+    "ingredients": []
+  },
+  {
+    "name": "水煮鱼",
+    "cuisine": "chuancai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《水煮鱼》。",
+    "ingredients": []
+  },
+  {
+    "name": "夫妻肺片",
+    "cuisine": "chuancai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《夫妻肺片》。",
+    "ingredients": []
+  },
+  {
+    "name": "担担面",
+    "cuisine": "chuancai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《担担面》。",
+    "ingredients": []
+  },
+  {
+    "name": "酸菜鱼",
+    "cuisine": "chuancai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《酸菜鱼》。",
+    "ingredients": []
+  },
+  {
+    "name": "泡椒牛蛙",
+    "cuisine": "chuancai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《泡椒牛蛙》。",
+    "ingredients": []
+  },
+  {
+    "name": "辣子鸡丁",
+    "cuisine": "chuancai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《辣子鸡丁》。",
+    "ingredients": []
+  },
+  {
+    "name": "口水鸡",
+    "cuisine": "chuancai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《口水鸡》。",
+    "ingredients": []
+  },
+  {
+    "name": "歌乐山辣子鸡",
+    "cuisine": "chuancai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《歌乐山辣子鸡》。",
+    "ingredients": []
+  },
+  {
+    "name": "冒菜",
+    "cuisine": "chuancai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《冒菜》。",
+    "ingredients": []
+  },
+  {
+    "name": "钵钵鸡",
+    "cuisine": "chuancai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《钵钵鸡》。",
+    "ingredients": []
+  },
+  {
+    "name": "豆花",
+    "cuisine": "chuancai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《豆花》。",
+    "ingredients": []
+  },
+  {
+    "name": "赖汤圆",
+    "cuisine": "chuancai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《赖汤圆》。",
+    "ingredients": []
+  },
+  {
+    "name": "麻辣烫",
+    "cuisine": "chuancai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《麻辣烫》。",
+    "ingredients": []
+  },
+  {
+    "name": "酸辣粉",
+    "cuisine": "chuancai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《酸辣粉》。",
+    "ingredients": []
+  },
+  {
+    "name": "泡菜排骨",
+    "cuisine": "chuancai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《泡菜排骨》。",
+    "ingredients": []
+  },
+  {
+    "name": "椒麻鸡",
+    "cuisine": "chuancai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《椒麻鸡》。",
+    "ingredients": []
+  },
+  {
+    "name": "臭鳜鱼",
+    "cuisine": "huicai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《臭鳜鱼》。",
+    "ingredients": []
+  },
+  {
+    "name": "毛豆腐",
+    "cuisine": "huicai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《毛豆腐》。",
+    "ingredients": []
+  },
+  {
+    "name": "徽州一品锅",
+    "cuisine": "huicai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《徽州一品锅》。",
+    "ingredients": []
+  },
+  {
+    "name": "笋干烧肉",
+    "cuisine": "huicai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《笋干烧肉》。",
+    "ingredients": []
+  },
+  {
+    "name": "腌鲜鳜鱼",
+    "cuisine": "huicai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《腌鲜鳜鱼》。",
+    "ingredients": []
+  },
+  {
+    "name": "火腿炖甲鱼",
+    "cuisine": "huicai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《火腿炖甲鱼》。",
+    "ingredients": []
+  },
+  {
+    "name": "胡适一品锅",
+    "cuisine": "huicai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《胡适一品锅》。",
+    "ingredients": []
+  },
+  {
+    "name": "清炖马蹄鳖",
+    "cuisine": "huicai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《清炖马蹄鳖》。",
+    "ingredients": []
+  },
+  {
+    "name": "黄山炖鸽",
+    "cuisine": "huicai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《黄山炖鸽》。",
+    "ingredients": []
+  },
+  {
+    "name": "清炖老鸡",
+    "cuisine": "huicai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《清炖老鸡》。",
+    "ingredients": []
+  },
+  {
+    "name": "红烧小河鱼",
+    "cuisine": "huicai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《红烧小河鱼》。",
+    "ingredients": []
+  },
+  {
+    "name": "清蒸石鸡",
+    "cuisine": "huicai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《清蒸石鸡》。",
+    "ingredients": []
+  },
+  {
+    "name": "徽州圆子",
+    "cuisine": "huicai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《徽州圆子》。",
+    "ingredients": []
+  },
+  {
+    "name": "臭鳜鱼梅菜煲",
+    "cuisine": "huicai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《臭鳜鱼梅菜煲》。",
+    "ingredients": []
+  },
+  {
+    "name": "刀板香",
+    "cuisine": "huicai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《刀板香》。",
+    "ingredients": []
+  },
+  {
+    "name": "徽式酥鲫鱼",
+    "cuisine": "huicai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《徽式酥鲫鱼》。",
+    "ingredients": []
+  },
+  {
+    "name": "红烧知了猴",
+    "cuisine": "huicai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《红烧知了猴》。",
+    "ingredients": []
+  },
+  {
+    "name": "火腿炖冬笋",
+    "cuisine": "huicai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《火腿炖冬笋》。",
+    "ingredients": []
+  },
+  {
+    "name": "腌鲜竹笋",
+    "cuisine": "huicai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《腌鲜竹笋》。",
+    "ingredients": []
+  },
+  {
+    "name": "刀板香炒饭",
+    "cuisine": "huicai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《刀板香炒饭》。",
+    "ingredients": []
+  },
+  {
+    "name": "九转大肠",
+    "cuisine": "lucai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《九转大肠》。",
+    "ingredients": []
+  },
+  {
+    "name": "糖醋鲤鱼",
+    "cuisine": "lucai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《糖醋鲤鱼》。",
+    "ingredients": []
+  },
+  {
+    "name": "葱烧海参",
+    "cuisine": "lucai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《葱烧海参》。",
+    "ingredients": []
+  },
+  {
+    "name": "四喜丸子",
+    "cuisine": "lucai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《四喜丸子》。",
+    "ingredients": []
+  },
+  {
+    "name": "德州扒鸡",
+    "cuisine": "lucai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《德州扒鸡》。",
+    "ingredients": []
+  },
+  {
+    "name": "爆三样",
+    "cuisine": "lucai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《爆三样》。",
+    "ingredients": []
+  },
+  {
+    "name": "清汤丸子",
+    "cuisine": "lucai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《清汤丸子》。",
+    "ingredients": []
+  },
+  {
+    "name": "扒海参",
+    "cuisine": "lucai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《扒海参》。",
+    "ingredients": []
+  },
+  {
+    "name": "一品豆腐",
+    "cuisine": "lucai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《一品豆腐》。",
+    "ingredients": []
+  },
+  {
+    "name": "胶东焖鱼",
+    "cuisine": "lucai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《胶东焖鱼》。",
+    "ingredients": []
+  },
+  {
+    "name": "油爆双脆",
+    "cuisine": "lucai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《油爆双脆》。",
+    "ingredients": []
+  },
+  {
+    "name": "锅塌豆腐",
+    "cuisine": "lucai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《锅塌豆腐》。",
+    "ingredients": []
+  },
+  {
+    "name": "清汤燕菜",
+    "cuisine": "lucai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《清汤燕菜》。",
+    "ingredients": []
+  },
+  {
+    "name": "葱爆羊肉",
+    "cuisine": "lucai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《葱爆羊肉》。",
+    "ingredients": []
+  },
+  {
+    "name": "黄焖鸡",
+    "cuisine": "lucai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《黄焖鸡》。",
+    "ingredients": []
+  },
+  {
+    "name": "锅塌鸡片",
+    "cuisine": "lucai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《锅塌鸡片》。",
+    "ingredients": []
+  },
+  {
+    "name": "糖醋里脊",
+    "cuisine": "lucai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《糖醋里脊》。",
+    "ingredients": []
+  },
+  {
+    "name": "鲍鱼扒肘",
+    "cuisine": "lucai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《鲍鱼扒肘》。",
+    "ingredients": []
+  },
+  {
+    "name": "烩乌鱼蛋",
+    "cuisine": "lucai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《烩乌鱼蛋》。",
+    "ingredients": []
+  },
+  {
+    "name": "海米冬瓜",
+    "cuisine": "lucai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《海米冬瓜》。",
+    "ingredients": []
+  },
+  {
+    "name": "佛跳墙",
+    "cuisine": "mincai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《佛跳墙》。",
+    "ingredients": []
+  },
+  {
+    "name": "海蛎煎",
+    "cuisine": "mincai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《海蛎煎》。",
+    "ingredients": []
+  },
+  {
+    "name": "沙茶面",
+    "cuisine": "mincai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《沙茶面》。",
+    "ingredients": []
+  },
+  {
+    "name": "荔枝肉",
+    "cuisine": "mincai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《荔枝肉》。",
+    "ingredients": []
+  },
+  {
+    "name": "烧仙草（甜品）",
+    "cuisine": "mincai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《烧仙草（甜品）》。",
+    "ingredients": []
+  },
+  {
+    "name": "土笋冻",
+    "cuisine": "mincai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《土笋冻》。",
+    "ingredients": []
+  },
+  {
+    "name": "红糟鸡",
+    "cuisine": "mincai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《红糟鸡》。",
+    "ingredients": []
+  },
+  {
+    "name": "五香卷",
+    "cuisine": "mincai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《五香卷》。",
+    "ingredients": []
+  },
+  {
+    "name": "清炖淡菜",
+    "cuisine": "mincai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《清炖淡菜》。",
+    "ingredients": []
+  },
+  {
+    "name": "扁肉燕",
+    "cuisine": "mincai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《扁肉燕》。",
+    "ingredients": []
+  },
+  {
+    "name": "太极芋泥",
+    "cuisine": "mincai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《太极芋泥》。",
+    "ingredients": []
+  },
+  {
+    "name": "肉燕汤",
+    "cuisine": "mincai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《肉燕汤》。",
+    "ingredients": []
+  },
+  {
+    "name": "八宝红鲟饭",
+    "cuisine": "mincai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《八宝红鲟饭》。",
+    "ingredients": []
+  },
+  {
+    "name": "漳州卤面",
+    "cuisine": "mincai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《漳州卤面》。",
+    "ingredients": []
+  },
+  {
+    "name": "清汤汆海蚌",
+    "cuisine": "mincai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《清汤汆海蚌》。",
+    "ingredients": []
+  },
+  {
+    "name": "厦门烙",
+    "cuisine": "mincai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《厦门烙》。",
+    "ingredients": []
+  },
+  {
+    "name": "福州鱼丸",
+    "cuisine": "mincai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《福州鱼丸》。",
+    "ingredients": []
+  },
+  {
+    "name": "清炖鸽子",
+    "cuisine": "mincai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《清炖鸽子》。",
+    "ingredients": []
+  },
+  {
+    "name": "糟菜炖鸭",
+    "cuisine": "mincai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《糟菜炖鸭》。",
+    "ingredients": []
+  },
+  {
+    "name": "花生汤",
+    "cuisine": "mincai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《花生汤》。",
+    "ingredients": []
+  },
+  {
+    "name": "松鼠桂鱼",
+    "cuisine": "sucai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《松鼠桂鱼》。",
+    "ingredients": []
+  },
+  {
+    "name": "红烧狮子头",
+    "cuisine": "sucai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《红烧狮子头》。",
+    "ingredients": []
+  },
+  {
+    "name": "清炖蟹粉狮子头",
+    "cuisine": "sucai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《清炖蟹粉狮子头》。",
+    "ingredients": []
+  },
+  {
+    "name": "扬州炒饭",
+    "cuisine": "sucai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《扬州炒饭》。",
+    "ingredients": []
+  },
+  {
+    "name": "三套鸭",
+    "cuisine": "sucai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《三套鸭》。",
+    "ingredients": []
+  },
+  {
+    "name": "霸王别姬",
+    "cuisine": "sucai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《霸王别姬》。",
+    "ingredients": []
+  },
+  {
+    "name": "平桥豆腐",
+    "cuisine": "sucai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《平桥豆腐》。",
+    "ingredients": []
+  },
+  {
+    "name": "盐水鸭",
+    "cuisine": "sucai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《盐水鸭》。",
+    "ingredients": []
+  },
+  {
+    "name": "糖醋小排",
+    "cuisine": "sucai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《糖醋小排》。",
+    "ingredients": []
+  },
+  {
+    "name": "清汤火方",
+    "cuisine": "sucai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《清汤火方》。",
+    "ingredients": []
+  },
+  {
+    "name": "蟹粉豆腐",
+    "cuisine": "sucai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《蟹粉豆腐》。",
+    "ingredients": []
+  },
+  {
+    "name": "金陵狮子头",
+    "cuisine": "sucai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《金陵狮子头》。",
+    "ingredients": []
+  },
+  {
+    "name": "大煮干丝",
+    "cuisine": "sucai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《大煮干丝》。",
+    "ingredients": []
+  },
+  {
+    "name": "清炖鸡孚",
+    "cuisine": "sucai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《清炖鸡孚》。",
+    "ingredients": []
+  },
+  {
+    "name": "清炖河鳗",
+    "cuisine": "sucai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《清炖河鳗》。",
+    "ingredients": []
+  },
+  {
+    "name": "文思豆腐",
+    "cuisine": "sucai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《文思豆腐》。",
+    "ingredients": []
+  },
+  {
+    "name": "桂花糖芋艿",
+    "cuisine": "sucai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《桂花糖芋艿》。",
+    "ingredients": []
+  },
+  {
+    "name": "清炖甲鱼",
+    "cuisine": "sucai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《清炖甲鱼》。",
+    "ingredients": []
+  },
+  {
+    "name": "松仁玉米",
+    "cuisine": "sucai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《松仁玉米》。",
+    "ingredients": []
+  },
+  {
+    "name": "姜汁鳝糊",
+    "cuisine": "sucai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《姜汁鳝糊》。",
+    "ingredients": []
+  },
+  {
+    "name": "剁椒鱼头",
+    "cuisine": "xiangcai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《剁椒鱼头》。",
+    "ingredients": []
+  },
+  {
+    "name": "毛氏红烧肉",
+    "cuisine": "xiangcai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《毛氏红烧肉》。",
+    "ingredients": []
+  },
+  {
+    "name": "辣椒炒肉",
+    "cuisine": "xiangcai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《辣椒炒肉》。",
+    "ingredients": []
+  },
+  {
+    "name": "口味虾",
+    "cuisine": "xiangcai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《口味虾》。",
+    "ingredients": []
+  },
+  {
+    "name": "小炒黄牛肉",
+    "cuisine": "xiangcai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《小炒黄牛肉》。",
+    "ingredients": []
+  },
+  {
+    "name": "爆炒鱿鱼须",
+    "cuisine": "xiangcai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《爆炒鱿鱼须》。",
+    "ingredients": []
+  },
+  {
+    "name": "腊味合蒸",
+    "cuisine": "xiangcai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《腊味合蒸》。",
+    "ingredients": []
+  },
+  {
+    "name": "干锅手撕包菜",
+    "cuisine": "xiangcai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《干锅手撕包菜》。",
+    "ingredients": []
+  },
+  {
+    "name": "麻辣小龙虾",
+    "cuisine": "xiangcai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《麻辣小龙虾》。",
+    "ingredients": []
+  },
+  {
+    "name": "外婆菜炒肉末",
+    "cuisine": "xiangcai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《外婆菜炒肉末》。",
+    "ingredients": []
+  },
+  {
+    "name": "芹菜炒腊肉",
+    "cuisine": "xiangcai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《芹菜炒腊肉》。",
+    "ingredients": []
+  },
+  {
+    "name": "酸豆角炒肉末",
+    "cuisine": "xiangcai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《酸豆角炒肉末》。",
+    "ingredients": []
+  },
+  {
+    "name": "剁椒蒸茄子",
+    "cuisine": "xiangcai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《剁椒蒸茄子》。",
+    "ingredients": []
+  },
+  {
+    "name": "麻辣肥肠",
+    "cuisine": "xiangcai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《麻辣肥肠》。",
+    "ingredients": []
+  },
+  {
+    "name": "干锅花菜",
+    "cuisine": "xiangcai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《干锅花菜》。",
+    "ingredients": []
+  },
+  {
+    "name": "米粉蒸肉",
+    "cuisine": "xiangcai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《米粉蒸肉》。",
+    "ingredients": []
+  },
+  {
+    "name": "农家一碗香",
+    "cuisine": "xiangcai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《农家一碗香》。",
+    "ingredients": []
+  },
+  {
+    "name": "鱼头豆腐汤",
+    "cuisine": "xiangcai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《鱼头豆腐汤》。",
+    "ingredients": []
+  },
+  {
+    "name": "柴火鸡",
+    "cuisine": "xiangcai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《柴火鸡》。",
+    "ingredients": []
+  },
+  {
+    "name": "辣椒炒蛋",
+    "cuisine": "xiangcai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《辣椒炒蛋》。",
+    "ingredients": []
+  },
+  {
+    "name": "白切鸡",
+    "cuisine": "yuecai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《白切鸡》。",
+    "ingredients": []
+  },
+  {
+    "name": "清蒸鲈鱼",
+    "cuisine": "yuecai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《清蒸鲈鱼》。",
+    "ingredients": []
+  },
+  {
+    "name": "干炒牛河",
+    "cuisine": "yuecai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《干炒牛河》。",
+    "ingredients": []
+  },
+  {
+    "name": "叉烧",
+    "cuisine": "yuecai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《叉烧》。",
+    "ingredients": []
+  },
+  {
+    "name": "豉汁蒸排骨",
+    "cuisine": "yuecai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《豉汁蒸排骨》。",
+    "ingredients": []
+  },
+  {
+    "name": "葱油鸡",
+    "cuisine": "yuecai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《葱油鸡》。",
+    "ingredients": []
+  },
+  {
+    "name": "文昌鸡",
+    "cuisine": "yuecai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《文昌鸡》。",
+    "ingredients": []
+  },
+  {
+    "name": "豉油皇炒面",
+    "cuisine": "yuecai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《豉油皇炒面》。",
+    "ingredients": []
+  },
+  {
+    "name": "咕噜肉",
+    "cuisine": "yuecai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《咕噜肉》。",
+    "ingredients": []
+  },
+  {
+    "name": "盐焗鸡",
+    "cuisine": "yuecai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《盐焗鸡》。",
+    "ingredients": []
+  },
+  {
+    "name": "豉椒牛河",
+    "cuisine": "yuecai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《豉椒牛河》。",
+    "ingredients": []
+  },
+  {
+    "name": "广式烧鸭",
+    "cuisine": "yuecai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《广式烧鸭》。",
+    "ingredients": []
+  },
+  {
+    "name": "煲仔饭",
+    "cuisine": "yuecai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《煲仔饭》。",
+    "ingredients": []
+  },
+  {
+    "name": "姜葱炒蟹",
+    "cuisine": "yuecai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《姜葱炒蟹》。",
+    "ingredients": []
+  },
+  {
+    "name": "白灼虾",
+    "cuisine": "yuecai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《白灼虾》。",
+    "ingredients": []
+  },
+  {
+    "name": "瑶柱蛋白炒饭",
+    "cuisine": "yuecai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《瑶柱蛋白炒饭》。",
+    "ingredients": []
+  },
+  {
+    "name": "艇仔粥",
+    "cuisine": "yuecai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《艇仔粥》。",
+    "ingredients": []
+  },
+  {
+    "name": "广式腊味合蒸",
+    "cuisine": "yuecai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《广式腊味合蒸》。",
+    "ingredients": []
+  },
+  {
+    "name": "上汤浸时蔬",
+    "cuisine": "yuecai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《上汤浸时蔬》。",
+    "ingredients": []
+  },
+  {
+    "name": "咸蛋蒸肉饼",
+    "cuisine": "yuecai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《咸蛋蒸肉饼》。",
+    "ingredients": []
+  },
+  {
+    "name": "西湖醋鱼",
+    "cuisine": "zhecai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《西湖醋鱼》。",
+    "ingredients": []
+  },
+  {
+    "name": "东坡肉",
+    "cuisine": "zhecai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《东坡肉》。",
+    "ingredients": []
+  },
+  {
+    "name": "龙井虾仁",
+    "cuisine": "zhecai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《龙井虾仁》。",
+    "ingredients": []
+  },
+  {
+    "name": "油焖春笋",
+    "cuisine": "zhecai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《油焖春笋》。",
+    "ingredients": []
+  },
+  {
+    "name": "宋嫂鱼羹",
+    "cuisine": "zhecai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《宋嫂鱼羹》。",
+    "ingredients": []
+  },
+  {
+    "name": "叫化鸡",
+    "cuisine": "zhecai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《叫化鸡》。",
+    "ingredients": []
+  },
+  {
+    "name": "杭州酱鸭",
+    "cuisine": "zhecai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《杭州酱鸭》。",
+    "ingredients": []
+  },
+  {
+    "name": "雪菜黄鱼",
+    "cuisine": "zhecai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《雪菜黄鱼》。",
+    "ingredients": []
+  },
+  {
+    "name": "八宝菜",
+    "cuisine": "zhecai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《八宝菜》。",
+    "ingredients": []
+  },
+  {
+    "name": "笋干老鸭煲",
+    "cuisine": "zhecai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《笋干老鸭煲》。",
+    "ingredients": []
+  },
+  {
+    "name": "西湖莼菜汤",
+    "cuisine": "zhecai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《西湖莼菜汤》。",
+    "ingredients": []
+  },
+  {
+    "name": "清汤越鸡",
+    "cuisine": "zhecai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《清汤越鸡》。",
+    "ingredients": []
+  },
+  {
+    "name": "蜜汁火方",
+    "cuisine": "zhecai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《蜜汁火方》。",
+    "ingredients": []
+  },
+  {
+    "name": "糟溜鱼片",
+    "cuisine": "zhecai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《糟溜鱼片》。",
+    "ingredients": []
+  },
+  {
+    "name": "虾爆鳝面",
+    "cuisine": "zhecai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《虾爆鳝面》。",
+    "ingredients": []
+  },
+  {
+    "name": "腌笃鲜",
+    "cuisine": "zhecai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《腌笃鲜》。",
+    "ingredients": []
+  },
+  {
+    "name": "响油鳝糊",
+    "cuisine": "zhecai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《响油鳝糊》。",
+    "ingredients": []
+  },
+  {
+    "name": "老鸭面",
+    "cuisine": "zhecai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《老鸭面》。",
+    "ingredients": []
+  },
+  {
+    "name": "霉干菜扣肉",
+    "cuisine": "zhecai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《霉干菜扣肉》。",
+    "ingredients": []
+  },
+  {
+    "name": "绍兴醉鸡",
+    "cuisine": "zhecai",
+    "image_url": "",
+    "instructions": "1) 准备好食材并完成基础处理；\n2) 热锅冷油依次下主辅料；\n3) 调味后根据口感收汁或焖煮；\n4) 出锅装盘，即成《绍兴醉鸡》。",
+    "ingredients": []
   }
-  // ……你可以继续在此文件内追加任意数量的菜，字段同上；
-  // cuisine 取值：chuancai/yuecai/sucai/zhecai/mincai/xiangcai/huicai/lucai/custom
 ]
