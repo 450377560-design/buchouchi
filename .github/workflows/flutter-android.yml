@@ -34,60 +34,85 @@ jobs:
           channel: stable
           cache: true
 
-      - name: Flutter Doctor
-        run: flutter doctor -v
+      - name: Show refs
+        run: |
+          echo "REF: $GITHUB_REF"
+          echo "SHA: $GITHUB_SHA"
 
-      # 确认位置 & 关键文件存在（避免在错误目录执行）
       - name: Guard - ensure project root
         run: |
           set -e
           ls -lah
-          test -f pubspec.yaml || { echo "::error ::pubspec.yaml not found in current directory"; exit 1; }
+          test -f pubspec.yaml || { echo "::error ::pubspec.yaml not found"; exit 1; }
           test -d lib || { echo "::error ::lib/ directory not found"; exit 1; }
+
+      - name: Flutter Doctor
+        run: flutter doctor -v
 
       - name: Clean build
         run: flutter clean
 
-      # ⚠️ 关键：删除旧 android/，彻底避免残留
-      - name: Remove old Android host
-        run: |
-          set -e
-          rm -rf android
-          echo "android/ removed."
-
-      # 仅重建 Android 宿主（不会覆盖 lib/）
-      - name: Regenerate Android host only
+      # 在临时目录重建 Android 宿主，仅把 android/ 拷回，避免触碰 lib/ 与 pubspec.yaml
+      - name: Recreate android host in temp (do not touch lib/ or pubspec)
         run: |
           set -euo pipefail
-          flutter --version
-          flutter create . \
-            --platforms=android \
-            --org com.example \
-            --project-name buchouchi \
-            --overwrite
-
-      # 打印关键文件，确认是新模板
-      - name: Debug - show Android gradle files
-        run: |
-          set -e
-          echo "---- android/settings.gradle ----"
-          sed -n '1,200p' android/settings.gradle || true
-          echo "---- android/app/build.gradle ----"
-          sed -n '1,200p' android/app/build.gradle || true
-          echo "---- gradle wrapper ----"
-          cat android/gradle/wrapper/gradle-wrapper.properties || true
-
-      # （可选）设置中文应用名
-      - name: Set app name to Chinese
-        run: |
-          set -e
+          tmpdir="$(mktemp -d)"
+          echo "Using temp dir: $tmpdir"
+          (
+            cd "$tmpdir"
+            flutter create host \
+              --platforms=android \
+              --org com.example \
+              --project-name buchouchi
+          )
+          rm -rf android
+          cp -a "$tmpdir/host/android" ./android
           XML="android/app/src/main/res/values/strings.xml"
           if [ -f "$XML" ]; then
             sed -i 's#<string name="app_name">[^<]*</string>#<string name="app_name">不愁吃</string>#g' "$XML"
           fi
+          echo "---- android/settings.gradle ----"
+          sed -n '1,200p' android/settings.gradle
+          echo "---- gradle wrapper ----"
+          cat android/gradle/wrapper/gradle-wrapper.properties
 
-      # 防止模板 main.dart（如果你还没改好，这里会自动替换，仅在 CI 容器内）
-      - name: Autofix - replace template main.dart if detected (no heredoc)
+      # ✅ 关键：确保 pubspec.yaml 中有 sqflite & path（没有就自动添加）
+      - name: Ensure sqflite & path deps
+        run: |
+          set -e
+          echo "---- pubspec.yaml (before) ----"
+          sed -n '1,200p' pubspec.yaml
+
+          need_add_sqflite=1
+          need_add_path=1
+          grep -qE '^[[:space:]]*sqflite:' pubspec.yaml && need_add_sqflite=0
+          grep -qE '^[[:space:]]*path:' pubspec.yaml && need_add_path=0
+
+          if [ "$need_add_sqflite" -eq 1 ]; then
+            echo "Adding sqflite via dart pub add..."
+            dart pub add sqflite
+          fi
+          if [ "$need_add_path" -eq 1 ]; then
+            echo "Adding path via dart pub add..."
+            dart pub add path
+          fi
+
+          echo "---- pubspec.yaml (after) ----"
+          sed -n '1,200p' pubspec.yaml
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      # 保障：确认 lock 文件里真的解析到了 sqflite/path；否则直接失败（早于编译报错）
+      - name: Verify deps resolved in pubspec.lock
+        run: |
+          set -e
+          grep -q "sqflite" pubspec.lock || { echo "::error ::sqflite not found in pubspec.lock"; sed -n '1,200p' pubspec.lock || true; exit 1; }
+          grep -q "path:" pubspec.lock || { echo "::error ::path not found in pubspec.lock"; sed -n '1,200p' pubspec.lock || true; exit 1; }
+          echo "✅ sqflite & path are resolved."
+
+      # 若 main.dart 仍是计数器模板，CI 容器内自动替换（不改你的仓库）
+      - name: Autofix - replace template main.dart if detected
         run: |
           set -e
           if grep -qE "Flutter Demo Home Page|MyHomePage" lib/main.dart; then
@@ -122,19 +147,15 @@ jobs:
             sed -n '1,120p' lib/main.dart
           fi
 
-      # 保障：确保不是旧模板 & 关键文件存在
       - name: Guard - ensure template removed
         run: |
           set -e
           if grep -R --line-number -E "Flutter Demo Home Page|MyHomePage" lib/ ; then
-            echo "::error title=Template app detected::Your lib/ still contains the Flutter demo template."
+            echo "::error ::Flutter demo template still present."
             exit 1
           fi
           test -f lib/pages/home_page.dart || { echo "::error ::lib/pages/home_page.dart not found"; exit 1; }
           test -f lib/db/database_helper.dart || { echo "::error ::lib/db/database_helper.dart not found"; exit 1; }
-
-      - name: Install dependencies
-        run: flutter pub get
 
       - name: Build APK (release)
         run: flutter build apk --release
