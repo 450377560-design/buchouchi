@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       target_ref:
-        description: "Branch or tag to build (e.g. main / feature/x / v1.0.0)"
+        description: "Branch or tag to build (e.g. main / feature/x)"
         required: false
         default: ""
 
@@ -37,32 +37,56 @@ jobs:
       - name: Flutter Doctor
         run: flutter doctor -v
 
+      # 确认位置 & 关键文件存在（避免在错误目录执行）
+      - name: Guard - ensure project root
+        run: |
+          set -e
+          ls -lah
+          test -f pubspec.yaml || { echo "::error ::pubspec.yaml not found in current directory"; exit 1; }
+          test -d lib || { echo "::error ::lib/ directory not found"; exit 1; }
+
       - name: Clean build
         run: flutter clean
 
-      # 仅重建 android 宿主（不动 lib/）
+      # ⚠️ 关键：删除旧 android/，彻底避免残留
+      - name: Remove old Android host
+        run: |
+          set -e
+          rm -rf android
+          echo "android/ removed."
+
+      # 仅重建 Android 宿主（不会覆盖 lib/）
       - name: Regenerate Android host only
         run: |
           set -euo pipefail
+          flutter --version
           flutter create . \
             --platforms=android \
             --org com.example \
             --project-name buchouchi \
             --overwrite
+
+      # 打印关键文件，确认是新模板
+      - name: Debug - show Android gradle files
+        run: |
+          set -e
+          echo "---- android/settings.gradle ----"
+          sed -n '1,200p' android/settings.gradle || true
+          echo "---- android/app/build.gradle ----"
+          sed -n '1,200p' android/app/build.gradle || true
+          echo "---- gradle wrapper ----"
+          cat android/gradle/wrapper/gradle-wrapper.properties || true
+
+      # （可选）设置中文应用名
+      - name: Set app name to Chinese
+        run: |
+          set -e
           XML="android/app/src/main/res/values/strings.xml"
           if [ -f "$XML" ]; then
             sed -i 's#<string name="app_name">[^<]*</string>#<string name="app_name">不愁吃</string>#g' "$XML"
           fi
 
-      # 打印当前构建的提交以及 main.dart 头部，方便核对
-      - name: Debug - print ref and main.dart head
-        run: |
-          set -e
-          echo "REF: $GITHUB_REF  SHA: $GITHUB_SHA"
-          echo "---- lib/main.dart (head) ----"
-          sed -n '1,120p' lib/main.dart || true
-
-      # ✅ 保底：若检测到模板痕迹，改用 printf 生成正确的 main.dart（避免 heredoc 缩进问题）
+      # 防止模板 main.dart（如果你还没改好，这里会自动替换，仅在 CI 容器内）
       - name: Autofix - replace template main.dart if detected (no heredoc)
         run: |
           set -e
@@ -95,20 +119,19 @@ jobs:
               "  }" \
               "}" \
               > lib/main.dart
-            echo "---- lib/main.dart (after autofix, head) ----"
             sed -n '1,120p' lib/main.dart
           fi
 
-      # 再做一次护栏，确保模板已清除且关键文件存在
+      # 保障：确保不是旧模板 & 关键文件存在
       - name: Guard - ensure template removed
         run: |
           set -e
           if grep -R --line-number -E "Flutter Demo Home Page|MyHomePage" lib/ ; then
-            echo "::error title=Template app detected::Your lib/ still contains the Flutter demo template after autofix."
+            echo "::error title=Template app detected::Your lib/ still contains the Flutter demo template."
             exit 1
           fi
-          test -f lib/pages/home_page.dart || { echo "::error title=Missing file::lib/pages/home_page.dart not found."; exit 1; }
-          test -f lib/db/database_helper.dart || { echo "::error title=Missing file::lib/db/database_helper.dart not found."; exit 1; }
+          test -f lib/pages/home_page.dart || { echo "::error ::lib/pages/home_page.dart not found"; exit 1; }
+          test -f lib/db/database_helper.dart || { echo "::error ::lib/db/database_helper.dart not found"; exit 1; }
 
       - name: Install dependencies
         run: flutter pub get
