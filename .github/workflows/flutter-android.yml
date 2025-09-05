@@ -35,16 +35,20 @@ jobs:
       - name: Clean build
         run: flutter clean
 
-      - name: Guard: ensure no Android v1 embedding
+      - name: Guard - ensure no Android v1 embedding
+        shell: bash
         run: |
-          if grep -R "io.flutter.app" -n android/ ; then
-            echo "Found deprecated v1 embedding import (io.flutter.app.*). Please remove them." >&2
+          set -euo pipefail
+          # 检查是否存在 v1 embedding 的典型痕迹
+          if grep -R --line-number --fixed-strings "io.flutter.app" android/ ; then
+            echo "::error title=Deprecated Android v1 embedding detected::Found 'io.flutter.app' imports."
             exit 1
           fi
-          if grep -R "FlutterMain" -n android/ ; then
-            echo "Found deprecated FlutterMain.* usage. Remove it." >&2
+          if grep -R --line-number --fixed-strings "FlutterMain" android/ ; then
+            echo "::error title=Deprecated Android v1 embedding detected::Found 'FlutterMain' usages."
             exit 1
           fi
+          echo "No Android v1 embedding traces found."
 
       - name: Build APK (release)
         run: flutter build apk --release
