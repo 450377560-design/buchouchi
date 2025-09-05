@@ -1,0 +1,63 @@
+name: Optimize Assets (WebP + Resize)
+
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  optimize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y webp imagemagick python3
+
+      - name: Convert JPG/PNG to WebP (max 1600px)
+        shell: bash
+        run: |
+          set -e
+          shopt -s nullglob
+          # 先等比缩放到最长边<=1600（只对 >1600 的动手，保留EXIF不会影响）
+          for f in assets/images/*.{jpg,JPG,jpeg,JPEG,png,PNG}; do
+            [ -f "$f" ] || continue
+            # 仅当宽或高大于1600时缩放
+            WH=$(identify -format "%w %h" "$f" 2>/dev/null || echo "0 0")
+            W=$(echo "$WH" | awk '{print $1}'); H=$(echo "$WH" | awk '{print $2}')
+            if [ "$W" -gt 1600 ] || [ "$H" -gt 1600 ]; then
+              mogrify -resize 1600x1600\> "$f"
+            fi
+            out="${f%.*}.webp"
+            # -q 80 质量与体积折中；-m 6 更慢但更小
+            cwebp -q 80 -m 6 -quiet "$f" -o "$out"
+            # 只有当webp生成成功且非空才删除原图
+            if [ -s "$out" ]; then
+              rm -f "$f"
+            fi
+          done
+
+      - name: Refresh images.json mapping (only when WebP exists)
+        run: |
+          python3 scripts/refresh_images_mapping.py
+          echo "Preview mapping:"
+          sed -n '1,200p' assets/recipes/images.json || true
+          echo "Remaining images in assets/images/:"
+          ls -lah assets/images || true
+
+      - name: Commit & push
+        run: |
+          set -e
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A assets/images assets/recipes/images.json
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "chore: optimize images to WebP & update mapping"
+            git push
+          fi
