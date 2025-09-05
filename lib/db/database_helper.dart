@@ -15,8 +15,9 @@ class DatabaseHelper {
   static const _dbName = 'buchouchi.db';
   // v2: recipes 加 image_url、instructions
   // v3: ingredients 加 is_custom、suggest_qty
-  // v4: 今日食谱 & 用量自定义
-  static const _dbVersion = 4;
+  // v4: 今日食谱 & 用量自定义表
+  // v5: 升级时导入 assets/recipes/seed_more.json（去重导入）
+  static const _dbVersion = 5;
 
   Database? _db;
 
@@ -80,6 +81,7 @@ class DatabaseHelper {
     ''');
 
     await _seed(db);
+    // 新装：导入更多种子
     await _importFromAssetIfAny(db, 'assets/recipes/seed_more.json');
   }
 
@@ -110,9 +112,13 @@ class DatabaseHelper {
         );
       ''');
     }
+    // v5：升级时也导入一次最新 seeds（安全去重，不覆盖已存在）
+    if (oldVersion < 5) {
+      await _importFromAssetIfAny(db, 'assets/recipes/seed_more.json');
+    }
   }
 
-  // ================== 基础样例（简化版） ==================
+  // ============== 初始种子（简化示例） ==============
   Future<void> _seed(Database db) async {
     Future<int> addRecipe({
       required String name,
@@ -190,7 +196,7 @@ class DatabaseHelper {
 4) 出锅装盘，即成《$name》。
 ''';
 
-  // ========== 批量导入（assets/recipes/seed_more.json） ==========
+  // ========== 从 assets 导入更多菜谱（JSON 数组） ==========
   Future<void> _importFromAssetIfAny(Database db, String assetPath) async {
     try {
       final text = await rootBundle.loadString(assetPath);
@@ -201,7 +207,7 @@ class DatabaseHelper {
         if (name.isEmpty) continue;
         final cuisine = CuisineX.fromKey((item['cuisine'] ?? 'custom').toString());
         final exists = (await db.query('recipes',
-            where: 'name = ? AND cuisine = ?', whereArgs: [name, cuisine.key])).isNotEmpty;
+          where: 'name = ? AND cuisine = ?', whereArgs: [name, cuisine.key])).isNotEmpty;
         if (exists) continue;
 
         final rid = await db.insert('recipes', {
@@ -214,9 +220,11 @@ class DatabaseHelper {
 
         final ings = (item['ingredients'] as List?) ?? [];
         for (final i in ings) {
+          final n = (i['name'] ?? '').toString().trim();
+          if (n.isEmpty) continue;
           await db.insert('ingredients', {
             'recipe_id': rid,
-            'name': (i['name'] ?? '').toString(),
+            'name': n,
             'is_owned': 0,
             'is_custom': 0,
             'suggest_qty': (i['suggest'] ?? '').toString().isEmpty ? null : i['suggest'],
@@ -224,20 +232,22 @@ class DatabaseHelper {
         }
       }
     } catch (_) {
-      // asset 不存在或格式问题，忽略即可
+      // asset 不存在或格式问题，忽略
     }
   }
 
   // ================== CRUD：Recipe ==================
   Future<List<Recipe>> getRecipesByCuisine(Cuisine c) async {
     final d = await db;
-    final maps = await d.query('recipes', where: 'cuisine = ?', whereArgs: [c.key], orderBy: 'id DESC');
+    final maps = await d.query('recipes',
+        where: 'cuisine = ?', whereArgs: [c.key], orderBy: 'id DESC');
     return maps.map(Recipe.fromMap).toList();
   }
 
   Future<List<Recipe>> getCustomRecipes() async {
     final d = await db;
-    final maps = await d.query('recipes', where: 'is_custom = 1', orderBy: 'id DESC');
+    final maps = await d.query('recipes',
+        where: 'is_custom = 1', orderBy: 'id DESC');
     return maps.map(Recipe.fromMap).toList();
   }
 
@@ -245,9 +255,11 @@ class DatabaseHelper {
     final d = await db;
     final rid = await d.insert('recipes', r.toMap());
     for (final m in initIngredients) {
+      final n = (m['name'] ?? '').trim();
+      if (n.isEmpty) continue;
       await d.insert('ingredients', {
         'recipe_id': rid,
-        'name': m['name']!.trim(),
+        'name': n,
         'is_owned': 0,
         'is_custom': 1,
         'suggest_qty': m['suggest'],
@@ -265,7 +277,8 @@ class DatabaseHelper {
   // ================== CRUD：Ingredient ==================
   Future<List<Ingredient>> getIngredients(int recipeId) async {
     final d = await db;
-    final maps = await d.query('ingredients', where: 'recipe_id = ?', whereArgs: [recipeId], orderBy: 'id ASC');
+    final maps = await d.query('ingredients',
+        where: 'recipe_id = ?', whereArgs: [recipeId], orderBy: 'id ASC');
     return maps.map(Ingredient.fromMap).toList();
   }
 
@@ -282,7 +295,8 @@ class DatabaseHelper {
 
   Future<void> setIngredientOwned(int ingredientId, bool owned) async {
     final d = await db;
-    await d.update('ingredients', {'is_owned': owned ? 1 : 0}, where: 'id = ?', whereArgs: [ingredientId]);
+    await d.update('ingredients', {'is_owned': owned ? 1 : 0},
+        where: 'id = ?', whereArgs: [ingredientId]);
   }
 
   Future<void> deleteIngredient(int ingredientId) async {
@@ -296,11 +310,14 @@ class DatabaseHelper {
   Future<void> toggleToday(int recipeId, {bool? setTo}) async {
     final d = await db;
     final dt = today;
-    final exists = await d.query('today_recipe', where: 'dt = ? AND recipe_id = ?', whereArgs: [dt, recipeId]);
+    final exists = await d.query('today_recipe',
+        where: 'dt = ? AND recipe_id = ?', whereArgs: [dt, recipeId]);
     if (setTo == true || (setTo == null && exists.isEmpty)) {
-      await d.insert('today_recipe', {'dt': dt, 'recipe_id': recipeId}, conflictAlgorithm: ConflictAlgorithm.ignore);
+      await d.insert('today_recipe', {'dt': dt, 'recipe_id': recipeId},
+          conflictAlgorithm: ConflictAlgorithm.ignore);
     } else {
-      await d.delete('today_recipe', where: 'dt = ? AND recipe_id = ?', whereArgs: [dt, recipeId]);
+      await d.delete('today_recipe',
+          where: 'dt = ? AND recipe_id = ?', whereArgs: [dt, recipeId]);
     }
   }
 
@@ -328,12 +345,17 @@ class DatabaseHelper {
       ORDER BY i.name COLLATE NOCASE ASC
     ''', [dt]);
 
-    final customRows = await d.query('today_custom_qty', where: 'dt = ?', whereArgs: [dt]);
-    final customMap = { for (final r in customRows) r['name'] as String : r['user_qty'] as String? };
+    final customRows = await d.query('today_custom_qty',
+        where: 'dt = ?', whereArgs: [dt]);
+    final customMap = {
+      for (final r in customRows) r['name'] as String : r['user_qty'] as String?
+    };
 
     return rows.map((r) => {
       'name': r['name'] as String,
-      'suggest': (r['suggest'] as String?)?.isEmpty ?? true ? null : r['suggest'] as String?,
+      'suggest': (r['suggest'] as String?)?.isEmpty ?? true
+          ? null
+          : r['suggest'] as String?,
       'user': customMap[r['name'] as String],
     }).toList();
   }
@@ -341,11 +363,12 @@ class DatabaseHelper {
   Future<void> upsertTodayUserQty(String name, String? userQty) async {
     final d = await db;
     final dt = today;
-    await d.insert('today_custom_qty', {'dt': dt, 'name': name, 'user_qty': userQty},
+    await d.insert('today_custom_qty',
+      {'dt': dt, 'name': name, 'user_qty': userQty},
       conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
-  // ================== 图片：维基百科解析并缓存到 recipes.image_url ==================
+  // ============ 网络图片兜底（维基百科）并缓存到 recipes.image_url ============
   Future<String?> resolveAndCacheImage(int recipeId, String name) async {
     final d = await db;
     // 先看有没有缓存
