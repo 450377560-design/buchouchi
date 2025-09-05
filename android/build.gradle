@@ -1,16 +1,26 @@
-buildscript {
-    repositories {
-        google()
-        mavenCentral()
-    }
-    dependencies {
-        // 保留空或仅用于极旧依赖；Flutter 新模板不需要在这里声明 AGP/Kotlin
-    }
+plugins {
+    id "com.android.application"
+    id "kotlin-android"
+    id "dev.flutter.flutter-gradle-plugin"
 }
 
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
+android {
+    namespace "com.example.buchouchi"
+    compileSdkVersion flutter.compileSdkVersion
+    ndkVersion flutter.ndkVersion
+
+    defaultConfig {
+        applicationId "com.example.buchouchi"
+        minSdkVersion flutter.minSdkVersion
+        targetSdkVersion flutter.targetSdkVersion
+        versionCode flutter.versionCode.toInteger()
+        versionName flutter.versionName
+    }
+
+    buildTypes {
+        release {
+            // 如果你有正式签名，这里替换为你的 release 签名配置
+            signingConfig signingConfigs.debug
+        }
     }
 }
