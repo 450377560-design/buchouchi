@@ -33,8 +33,11 @@ jobs:
       - name: Clean build
         run: flutter clean
 
-      # 2) 关键步骤：用当前 Flutter 版本重建 Android 宿主（不动 Dart 代码）
-      #    --org 与 --project-name 用于生成包名 com.example.buchouchi（和我们之前一致）
+      # 2) 删除旧版 Android 宿主，避免残留文件导致“unsupported Gradle project”
+      - name: Remove old Android host
+        run: rm -rf android
+
+      # 3) 用当前 Flutter 版本重建 Android 宿主（只生成 android/，不动 Dart 代码）
       - name: Regenerate Android host project
         run: |
           set -euo pipefail
@@ -44,16 +47,22 @@ jobs:
             --org com.example \
             --project-name buchouchi \
             --overwrite
+          # 打印一下目录结构，确认 android/ 已重建
+          ls -lah
+          ls -lah android || true
+          cat android/gradle/wrapper/gradle-wrapper.properties
 
-      # 3) 把应用名改回“ 不愁吃 ”（Flutter 模板默认会用 @string/app_name）
+      # 4) 把应用名改回中文“ 不愁吃 ”
       - name: Set app name to Chinese
         run: |
           XML="android/app/src/main/res/values/strings.xml"
           if [ -f "$XML" ]; then
             sed -i 's#<string name="app_name">[^<]*</string>#<string name="app_name">不愁吃</string>#g' "$XML"
+            echo "Updated $XML:"
+            cat "$XML"
           fi
 
-      # 4) 获取依赖并构建
+      # 5) 拉依赖并构建
       - name: Install dependencies
         run: flutter pub get
 
