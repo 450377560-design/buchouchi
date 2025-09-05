@@ -19,8 +19,13 @@ android {
 
     buildTypes {
         release {
-            // 如果你有正式签名，这里替换为你的 release 签名配置
+            // 先用 debug 签名打包；有正式签名再替换
             signingConfig signingConfigs.debug
         }
     }
+}
+
+// 告诉 Flutter Gradle 插件项目根路径（新模板要求）
+flutter {
+    source = "../.."
 }
