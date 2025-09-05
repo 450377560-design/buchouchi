@@ -20,7 +20,6 @@
 
         </activity>
 
-        <!-- 明确声明使用 v2 embedding -->
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
