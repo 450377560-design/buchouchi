@@ -1,0 +1,49 @@
+name: Fetch Recipe Images
+
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: write   # 允许推回仓库
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install deps
+        run: pip install requests
+
+      - name: Run fetch script
+        run: |
+          chmod +x scripts/fetch_wiki_images.py
+          python scripts/fetch_wiki_images.py
+          echo "Result tree:"
+          ls -lah assets/images || true
+          sed -n '1,120p' assets/recipes/images.json || true
+
+      - name: Commit & push if changed
+        run: |
+          set -e
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if [ -n "$(git status --porcelain)" ]; then
+            git add assets/images assets/recipes/images.json
+            git commit -m "ci: fetch recipe images & update mapping"
+            git push
+          else
+            echo "No changes to commit."
+          fi
+
+      - name: Upload images artifact (optional)
+        uses: actions/upload-artifact@v4
+        with:
+          name: recipe-images
+          path: assets/images/
