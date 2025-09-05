@@ -1,0 +1,49 @@
+name: Build Seeds (from lists)
+
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Ensure lists exist
+        run: |
+          set -e
+          mkdir -p assets/recipes/lists scripts
+          # 若列表不存在，创建空文件，便于你直接编辑
+          for f in chuancai yuecai sucai zhecai mincai xiangcai huicai lucai; do
+            [ -f assets/recipes/lists/$f.txt ] || touch assets/recipes/lists/$f.txt
+          done
+          # 确保脚本存在
+          test -f scripts/build_seed_json.py || { echo "::error ::scripts/build_seed_json.py missing"; exit 1; }
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Build seed_more.json
+        run: |
+          python scripts/build_seed_json.py
+          sed -n '1,120p' assets/recipes/seed_more.json || true
+          echo "Size: $(wc -l < assets/recipes/seed_more.json) lines"
+
+      - name: Commit & push
+        run: |
+          set -e
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/recipes/seed_more.json
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "ci: build seeds from lists"
+            git push
+          fi
