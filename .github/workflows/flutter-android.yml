@@ -32,6 +32,20 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
+      - name: Clean build
+        run: flutter clean
+
+      - name: Guard: ensure no Android v1 embedding
+        run: |
+          if grep -R "io.flutter.app" -n android/ ; then
+            echo "Found deprecated v1 embedding import (io.flutter.app.*). Please remove them." >&2
+            exit 1
+          fi
+          if grep -R "FlutterMain" -n android/ ; then
+            echo "Found deprecated FlutterMain.* usage. Remove it." >&2
+            exit 1
+          fi
+
       - name: Build APK (release)
         run: flutter build apk --release
 
