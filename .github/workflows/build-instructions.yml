@@ -1,0 +1,21 @@
+name: Build Instructions -> seed_more.json
+on:
+  workflow_dispatch: {}
+permissions:
+  contents: write
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Merge TSV into seed_more.json
+        run: |
+          python3 scripts/merge_instructions_into_seed.py
+          echo "Preview:"
+          sed -n '1,120p' assets/recipes/seed_more.json || true
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/recipes/seed_more.json
+          git diff --cached --quiet || git commit -m "chore: merge instructions into seed_more.json" && git push
