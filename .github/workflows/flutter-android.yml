@@ -184,9 +184,12 @@ jobs:
           test -f lib/db/database_helper.dart || { echo "::error ::lib/db/database_helper.dart not found"; exit 1; }
         working-directory: ${{ env.PROJ_DIR }}
 
-      - name: Build APK (release)
-        run: flutter build apk --release
-        working-directory: ${{ env.PROJ_DIR }}
+      - name: Build Android APK (per ABI, split debug symbols)
+        run: |
+          flutter build apk --release \
+            --split-per-abi \
+            --split-debug-info=build/symbols \
+            --obfuscate
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
