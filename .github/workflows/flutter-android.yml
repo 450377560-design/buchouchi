@@ -184,15 +184,46 @@ jobs:
           test -f lib/db/database_helper.dart || { echo "::error ::lib/db/database_helper.dart not found"; exit 1; }
         working-directory: ${{ env.PROJ_DIR }}
 
-      - name: Build Android APK (per ABI, split debug symbols)
+      # 🛠 构建：按 ABI 拆包 + 拆符号
+      - name: Build Android APKs (per ABI) + symbols
         run: |
           flutter build apk --release \
             --split-per-abi \
             --split-debug-info=build/symbols \
             --obfuscate
+          # 如也想要 AAB，请取消下行注释：
+          # flutter build appbundle --release --split-debug-info=build/symbols --obfuscate
+        working-directory: ${{ env.PROJ_DIR }}
 
-      - name: Upload APK Artifact
+      # 👀 列出产物，便于排查
+      - name: List build outputs (debug)
+        run: |
+          echo "APK outputs:"
+          ls -lah ${{ env.PROJ_DIR }}/build/app/outputs/flutter-apk || true
+          echo "AAB outputs:"
+          ls -lah ${{ env.PROJ_DIR }}/build/app/outputs/bundle/release || true
+
+      # 📦 收集所有 APK/AAB/符号 到 dist/
+      - name: Collect artifacts
+        run: |
+          set -e
+          cd "${{ env.PROJ_DIR }}"
+          mkdir -p dist
+          shopt -s nullglob
+          # APK
+          cp -v build/app/outputs/flutter-apk/*.apk dist/ || true
+          # AAB（若上面构建了）
+          cp -v build/app/outputs/bundle/release/*.aab dist/ || true
+          # 符号文件
+          if compgen -G "build/symbols/*" > /dev/null; then
+            tar -czf dist/symbols.tar.gz -C build symbols
+          fi
+          ls -lah dist
+
+      # ⬆️ 统一上传
+      - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: buchouchi-app-release
-          path: ${{ env.PROJ_DIR }}/build/app/outputs/flutter-apk/app-release.apk
+          name: android-build
+          path: ${{ env.PROJ_DIR }}/dist/**
+          if-no-files-found: error
